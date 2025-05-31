@@ -1,0 +1,50 @@
+--- SR5: Lexical Coherence ---
+
+Per-Run LexDiv Scores (sample):
+        Model Run  LexDiv_Per_Run
+0  ChatGPT-4o   1        0.807119
+1  ChatGPT-4o  10        0.795504
+2  ChatGPT-4o   2        0.818444
+3  ChatGPT-4o   3        0.799110
+4  ChatGPT-4o   4        0.787299
+
+Aggregated Lexical Diversity (LexDiv) per Model:
+                          Model  LexDiv
+0                    ChatGPT-4o   0.802
+1                    ChatGPT-o3   0.801
+2                     Claude3.7   0.800
+3                  DeepSeek(R1)   0.777
+4  Gemini-2.5-Pro-Preview-05-06   0.791
+5                         Grok3   0.750
+6                        Llama4   0.807
+7                       Mistral   0.799
+8                         Qwen3   0.780
+
+Method Name Redundancy per Model:
+                          Model  Redundancy
+0                    ChatGPT-4o        2.22
+1                    ChatGPT-o3        2.37
+2                     Claude3.7        2.71
+3                  DeepSeek(R1)        2.05
+4  Gemini-2.5-Pro-Preview-05-06        2.01
+5                         Grok3        1.77
+6                        Llama4        3.67
+7                       Mistral        6.00
+8                         Qwen3        2.39
+
+--- Statistical Test for Per-Run Lexical Diversity ---
+Kruskal-Wallis Results (Per-Run LexDiv):
+        Source  ddof1        H  p-unc
+Kruskal  Model      8  44.0653    0.0
+Kruskal-Wallis significant for LexDiv. Dunn's post-hoc:
+Dunn's Test Results (LexDiv):
+                              ChatGPT-4o  ChatGPT-o3  Claude3.7  DeepSeek(R1)  Gemini-2.5-Pro-Preview-05-06   Grok3  Llama4  Mistral   Qwen3
+ChatGPT-4o                        1.0000      1.0000     1.0000        0.0129                           1.0  0.0090  1.0000   1.0000  0.0229
+ChatGPT-o3                        1.0000      1.0000     1.0000        0.0237                           1.0  0.0167  1.0000   1.0000  0.0412
+Claude3.7                         1.0000      1.0000     1.0000        0.0424                           1.0  0.0304  1.0000   1.0000  0.0721
+DeepSeek(R1)                      0.0129      0.0237     0.0424        1.0000                           1.0  1.0000  0.0034   0.1573  1.0000
+Gemini-2.5-Pro-Preview-05-06      1.0000      1.0000     1.0000        1.0000                           1.0  1.0000  1.0000   1.0000  1.0000
+Grok3                             0.0090      0.0167     0.0304        1.0000                           1.0  1.0000  0.0023   0.1165  1.0000
+Llama4                            1.0000      1.0000     1.0000        0.0034                           1.0  0.0023  1.0000   1.0000  0.0064
+Mistral                           1.0000      1.0000     1.0000        0.1573                           1.0  0.1165  1.0000   1.0000  0.2525
+Qwen3                             0.0229      0.0412     0.0721        1.0000                           1.0  1.0000  0.0064   0.2525  1.0000

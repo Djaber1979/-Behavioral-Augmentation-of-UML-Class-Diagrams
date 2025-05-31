@@ -1,0 +1,64 @@
+--- Data for UML Diagram (Figure core-methods-full-uml) ---
+
+Class: UserAccount 
+  - Method: lockAccount (100% consistent)
+  - Method: activateAccount (100% consistent)
+  - Method: deactivateAccount (100% consistent)
+  - Method: createAccount (100% consistent)
+  - Method: deactivate (100% consistent)
+  - Method: login 
+  - Method: recordLogin 
+
+Class: UserCredentials (All its core methods 100% consistently placed by generating LLMs)
+  - Method: updatePassword (100% consistent)
+  - Method: generatePasswordResetToken (100% consistent)
+  - Method: validateCredentials (100% consistent)
+  - Method: resetPassword (100% consistent)
+  - Method: validatePasswordStrength (100% consistent)
+
+Class: Product (All its core methods 100% consistently placed by generating LLMs)
+  - Method: publishListing (100% consistent)
+  - Method: listProduct (100% consistent)
+  - Method: updateListing (100% consistent)
+  - Method: createListing (100% consistent)
+
+Class: NotificationService (All its core methods 100% consistently placed by generating LLMs)
+  - Method: sendPasswordResetConfirmation (100% consistent)
+  - Method: sendNotification (100% consistent)
+  - Method: sendVerificationEmail (100% consistent)
+
+Class: ServiceRequest 
+  - Method: schedule (100% consistent)
+  - Method: cancel (100% consistent)
+  - Method: cancelRequest (100% consistent)
+  - Method: updateStatus 
+
+Class: UserProfile 
+  - Method: updateProfile (100% consistent)
+  - Method: verifyEmail 
+  - Method: updateProfileDetails 
+  - Method: validateEmailFormat 
+
+Class: SearchFilter (All its core methods 100% consistently placed by generating LLMs)
+  - Method: applyFilters (100% consistent)
+
+Class: RoleManager (All its core methods 100% consistently placed by generating LLMs)
+  - Method: validateRoleTransition (100% consistent)
+  - Method: assignRole (100% consistent)
+
+Class: WasteJourney 
+  - Method: addStage (100% consistent)
+  - Method: updateLocation 
+
+Class: TransportRequest 
+  - Method: scheduleTransport 
+
+Class: CollectionRequest 
+  - Method: scheduleCollection 
+  - Method: acceptRequest 
+
+Class: CollectionPoint 
+  - Method: updateDetails 
+
+Class: Address 
+  - Method: validate 

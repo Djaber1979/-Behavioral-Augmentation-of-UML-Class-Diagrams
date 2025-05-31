@@ -1,0 +1,38 @@
+MethodName,Signature,GlobalFrequency,MaxSimilarity,TopClass,TopLLM
+assignRole,+ assignRole (),70,0.8493347764015198,RoleManager,Claude3.7
+updateProfile,+ updateProfile (),69,0.873502254486084,UserProfile,Llama4
+verifyEmail,+ verifyEmail (),63,0.7760627269744873,UserProfile,Claude3.7
+deactivateAccount,+ deactivateAccount (reason : String),53,0.8422012329101562,UserAccount,Llama4
+resetPassword,+ resetPassword (newPassword : String),53,0.8441733121871948,UserCredentials,Mistral
+cancelRequest,+ cancelRequest (),51,0.8051792979240417,ServiceRequest,Mistral
+updateDetails,+ updateDetails () : ValidationResult,50,0.854250967502594,CollectionPoint,Gemini-2.5-Pro-Preview-05-06
+sendVerificationEmail,+ sendVerificationEmail (user : UserProfile),44,0.7668808102607727,NotificationService,Claude3.7
+lockAccount,+ lockAccount (),39,0.5371034741401672,UserAccount,ChatGPT-4o
+validateCredentials,"+ validateCredentials (email : String, password : String) : ValidationResult",39,0.823043942451477,UserCredentials,Qwen3
+generatePasswordResetToken,+ generatePasswordResetToken () : String,36,0.928754448890686,UserCredentials,Gemini-2.5-Pro-Preview-05-06
+deactivate,+ deactivate (reason : String),35,0.8690493702888489,UserAccount,ChatGPT-o3
+publishListing,+ publishListing (),34,0.6232869029045105,Product,Claude3.7
+validatePasswordStrength,+ validatePasswordStrength (password : String) : ValidationResult,33,0.8727080821990967,UserCredentials,ChatGPT-o3
+acceptRequest,+ acceptRequest (provider : ServiceProvider),31,0.882676899433136,CollectionRequest,ChatGPT-4o
+scheduleTransport,+ scheduleTransport (),30,0.8773913383483887,TransportRequest,Mistral
+updatePassword,+ updatePassword (newPassword : String),30,0.7075040340423584,UserCredentials,Qwen3
+cancel,+ cancel (),30,0.7849632501602173,ServiceRequest,ChatGPT-o3
+updateLocation,+ updateLocation (location : Address),29,0.7521031498908997,WasteJourney,Claude3.7
+sendNotification,+ sendNotification (),29,0.66981041431427,NotificationService,Mistral
+updateStatus,+ updateStatus (),29,0.6784099340438843,ServiceRequest,Llama4
+validateRoleTransition,"+ validateRoleTransition (currentRole : UserRole, newRole : UserRole) : ValidationResult",29,0.8849839568138123,RoleManager,Llama4
+validate,+ validate () : ValidationResult,28,0.7842519283294678,Address,Claude3.7
+updateListing,+ updateListing (),27,0.8888193368911743,Product,Claude3.7
+updateProfileDetails,+ updateProfileDetails (),26,0.8325412273406982,UserProfile,Qwen3
+createListing,+ createListing () : ValidationResult,25,0.5974852442741394,Product,Claude3.7
+addStage,+ addStage (stage : Stage),25,0.5624451041221619,WasteJourney,Claude3.7
+schedule,+ schedule (),24,0.7214770317077637,ServiceRequest,Gemini-2.5-Pro-Preview-05-06
+validateEmailFormat,+ validateEmailFormat () : ValidationResult,24,0.8701984286308289,UserProfile,DeepSeek(R1)
+listProduct,+ listProduct (),23,0.6857010126113892,Product,Llama4
+activateAccount,+ activateAccount (),21,0.80959552526474,UserAccount,ChatGPT-4o
+createAccount,"+ createAccount (profile : UserProfile, credentials : UserCredentials) : UserAccount",21,0.8317340612411499,UserAccount,Claude3.7
+recordLogin,+ recordLogin (),21,0.8733658194541931,UserAccount,ChatGPT-o3
+applyFilters,+ applyFilters () : Product[],21,0.36571604013442993,SearchFilter,Qwen3
+sendPasswordResetConfirmation,+ sendPasswordResetConfirmation (userProfile : UserProfile),20,0.8657746911048889,NotificationService,Grok3
+login,+ login (),19,0.7884497046470642,UserAccount,Llama4
+scheduleCollection,+ scheduleCollection (),19,0.8377347588539124,CollectionRequest,Mistral

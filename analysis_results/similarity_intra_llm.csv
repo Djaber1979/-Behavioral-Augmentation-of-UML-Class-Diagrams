@@ -1,0 +1,9 @@
+Model,Avg_Intra_LLM_Similarity
+Mistral,0.442
+Claude3,0.302
+Llama4,0.276
+ChatGPT-o3,0.239
+Qwen3,0.211
+Gemini-2,0.193
+DeepSeek(R1),0.165
+Grok3,0.135

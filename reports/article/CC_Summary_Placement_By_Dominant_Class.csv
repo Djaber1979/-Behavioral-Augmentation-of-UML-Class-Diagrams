@@ -1,0 +1,14 @@
+Dominant_Class,num_core_methods_dominated,avg_match_rate,min_match_rate,median_match_rate,max_match_rate,std_match_rate
+UserAccount,7,94.76,80.00,100.00,100.00,9.00
+UserCredentials,5,100.00,100.00,100.00,100.00,0.00
+ServiceRequest,4,96.43,85.71,100.00,100.00,7.14
+UserProfile,4,88.89,83.33,86.11,100.00,7.86
+Product,4,100.00,100.00,100.00,100.00,0.00
+NotificationService,3,100.00,100.00,100.00,100.00,0.00
+RoleManager,2,100.00,100.00,100.00,100.00,0.00
+CollectionRequest,2,66.67,50.00,66.67,83.33,23.57
+WasteJourney,2,85.71,71.43,85.71,100.00,20.20
+CollectionPoint,1,75.00,75.00,75.00,75.00,
+Address,1,60.00,60.00,60.00,60.00,
+TransportRequest,1,85.71,85.71,85.71,85.71,
+SearchFilter,1,100.00,100.00,100.00,100.00,

@@ -1,0 +1,42 @@
+--- SR5: Lexical Coherence Statistical Analysis ---
+
+Aggregate Lexical Diversity (LexDiv) per Model:
+                          model  LexDiv_Agg
+0                    ChatGPT-4o       0.797
+1                    ChatGPT-o3       0.798
+2                     Claude3.7       0.801
+3                  DeepSeek(R1)       0.777
+4  Gemini-2.5-Pro-Preview-05-06       0.792
+5                         Grok3       0.793
+6                        Llama4       0.799
+7                       Mistral       0.792
+8                         Qwen3       0.780
+
+Method Name Redundancy per Model:
+                          model  Redundancy
+0                    ChatGPT-4o        2.22
+1                    ChatGPT-o3        2.37
+2                     Claude3.7        2.71
+3                  DeepSeek(R1)        2.05
+4  Gemini-2.5-Pro-Preview-05-06        2.01
+5                         Grok3        1.77
+6                        Llama4        3.67
+7                       Mistral        6.00
+8                         Qwen3        2.39
+
+--- Kruskal-Wallis Test for Per-Run Lexical Diversity ---
+Kruskal-Wallis Results (Per-Run LexDiv):
+        Source  ddof1        H  p-unc
+Kruskal  model      8  44.0653    0.0
+  Kruskal-Wallis significant. Dunn's post-hoc:
+  Dunn's Test Results (Per-Run LexDiv):
+                              ChatGPT-4o  ChatGPT-o3  Claude3.7  DeepSeek(R1)  Gemini-2.5-Pro-Preview-05-06   Grok3  Llama4  Mistral   Qwen3
+ChatGPT-4o                        1.0000      1.0000     1.0000        0.0129                           1.0  0.0090  1.0000   1.0000  0.0229
+ChatGPT-o3                        1.0000      1.0000     1.0000        0.0237                           1.0  0.0167  1.0000   1.0000  0.0412
+Claude3.7                         1.0000      1.0000     1.0000        0.0424                           1.0  0.0304  1.0000   1.0000  0.0721
+DeepSeek(R1)                      0.0129      0.0237     0.0424        1.0000                           1.0  1.0000  0.0034   0.1573  1.0000
+Gemini-2.5-Pro-Preview-05-06      1.0000      1.0000     1.0000        1.0000                           1.0  1.0000  1.0000   1.0000  1.0000
+Grok3                             0.0090      0.0167     0.0304        1.0000                           1.0  1.0000  0.0023   0.1165  1.0000
+Llama4                            1.0000      1.0000     1.0000        0.0034                           1.0  0.0023  1.0000   1.0000  0.0064
+Mistral                           1.0000      1.0000     1.0000        0.1573                           1.0  0.1165  1.0000   1.0000  0.2525
+Qwen3                             0.0229      0.0412     0.0721        1.0000                           1.0  1.0000  0.0064   0.2525  1.0000

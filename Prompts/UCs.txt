@@ -1,0 +1,507 @@
+Here are the UCs; analyze them all, and proceed.
+--------------------------------------------------------------------------------
+Title: Secure User Registration
+--------------------------------------------------------------------------------
+ID: UC1
+Actor: User (Unregistered)
+Description: A visitor to the platform registers as a user and must verify their email to activate the account.
+PreConditions:
+  – Visitor is not registered
+  – Valid email and password provided.
+Triggers:
+  – Visitor selects "Register" option
+MainScenario:
+  1. Visitor accesses registration page
+  2. Visitor provides required information (name, email, password, address, …)
+  3. Visitor submits the registration form
+  4. System validates email format and password strength
+  5. System creates a user account with unverified email status
+  6. System sends a verification email to the user  
+  7. User clicks verification link in the email  
+  8. System marks the email as verified and activates the account  
+  9. User receives confirmation of successful registration
+PostConditions:
+  – User account is created but requires email verification to log in
+  – After verification, the user can log in
+Extensions:
+  – Invalid email/password format: System rejects the form and prompts corrections
+  – Email already registered: System notifies the user and blocks duplicate registration
+  – Verification link expired/not clicked: System retains the account as unverified and denies login
+  – Technical issues during email delivery: System retries or alerts administrators
+
+--------------------------------------------------------------------------------
+Title: User Login
+--------------------------------------------------------------------------------
+ID: UC2
+Actor: User (encompassing all roles: User, Platform Manager, Service Provider)
+Description: Registered users (including User, Platform Managers and Service Providers) log into the platform using their email and password.
+PreConditions:
+  – User is registered and email is verified.
+Triggers:
+  – User selects "Log In".
+MainScenario:
+  1. User navigates to the login page.
+  2. User enters email and password.
+  3. System validates credentials.
+  4. System grants access to the user’s account based on their role.
+  5. System records the login timestamp.
+PostConditions:
+  – User is logged in.
+  – Login time is recorded.
+Extensions:
+  – Invalid email/password:
+        System displays an error message.
+        After 3 failed attempts, the system temporarily locks the account.
+  – Account locked:
+        System notifies the user and logs the lock event.
+  – Technical errors (e.g., server unavailability).
+
+--------------------------------------------------------------------------------
+Title: Password Recovery
+--------------------------------------------------------------------------------
+ID: UC3
+Actor: User
+Description: A registered user resets their forgotten password via email verification.
+PreConditions:
+  – User has a registered and verified email address.
+Triggers:
+  – User selects the "Forgot Password" option.
+MainScenario:
+  1. User selects "Forgot Password" on the login page.
+  2. User enters their registered email address.
+  3. System sends a password reset link to the email.
+  4. User clicks the reset link (valid for a limited time).
+  5. User enters and confirms a new password.
+  6. System updates the password and notifies the user to confirm the reset.
+PostConditions:
+  – User’s password is successfully updated.
+  – User can log in with the new password.
+Extensions:
+  – Invalid/unregistered email: System rejects the request.
+  – Expired reset link: System prompts the user to request a new link.
+  – Technical issues during email delivery or password update.
+
+--------------------------------------------------------------------------------
+Title: Managing User Profiles and Accounts
+--------------------------------------------------------------------------------
+ID: UC4
+Actor: User
+Description: A registered user updates their personal profile information or account settings.
+PreConditions:
+  – User is logged into their account.
+Triggers:
+  – User navigates to profile/account settings.
+MainScenario:
+  1. User navigates to "Profile Settings" or "Account Settings".
+  2. User edits information (e.g., name, phone number, address).
+  3. System validates the updated data (e.g., email format, address consistency).
+  4. User saves the changes.
+  5. System updates the profile and records the modification timestamp.
+PostConditions:
+  – User’s profile/account details are updated.
+  – The system logs the date/time of the last update.
+Extensions:
+  – Invalid input (e.g., malformed phone number): System rejects changes and prompts corrections.
+  – Failed to save changes: System rolls back and notifies the user.
+
+--------------------------------------------------------------------------------
+Title: Listing Recyclable Waste Products
+--------------------------------------------------------------------------------
+ID: UC5
+Actor: User
+Description: User lists a recyclable waste product.
+PreConditions:
+  – User is logged in.
+Triggers:
+  – User chooses to list a product.
+MainScenario:
+  1. User accesses the product listing page.
+  2. User enters product details (e.g., product name, category, inventory, description).
+  3. User submits the listing.
+  4. System validates and publishes the listing.
+PostConditions:
+  – Product is listed on the platform.
+Extensions:
+  – Invalid product details.
+  – Duplicate product listing.
+  – Technical issues during listing.
+
+--------------------------------------------------------------------------------
+Title: Requesting Waste Transport/Collection Services
+--------------------------------------------------------------------------------
+ID: UC6
+Actor: User
+Description: User requests a service for waste transport/collection.
+PreConditions:
+  – User is logged in and has waste to be transported/collected.
+Triggers:
+  – User decides to request waste transport/collection.
+MainScenario:
+  1. User accesses the service request section.
+  2. User fills out and submits the transport/collection request form.
+  3. Service provider receives the request and schedules the transport/collection.
+PostConditions:
+  – Waste transport/collection service is scheduled.
+Extensions:
+  – Incomplete request form.
+  – No service providers available.
+  – Technical issues during request submission.
+
+--------------------------------------------------------------------------------
+Title: Connecting with Transport Companies
+--------------------------------------------------------------------------------
+ID: UC7
+Actor: User
+Description: User connects with transport companies for waste transport/collection services.
+PreConditions:
+  – User is logged in and requires waste transport/collection services.
+Triggers:
+  – User decides to arrange for waste transport.
+MainScenario:
+  1. User accesses the list of transport/collection companies.
+  2. User selects a company based on their requirements.
+  3. User contacts the company or books a service directly.
+PostConditions:
+  – User is connected with a transport company for waste transport/collection.
+Extensions:
+  – No suitable transport/collection companies available.
+  – Technical issues during booking.
+
+--------------------------------------------------------------------------------
+Title: Handling Collection Requests
+--------------------------------------------------------------------------------
+ID: UC8
+Actor: Service Provider
+Description: The service provider reviews and manages pending waste collection requests.
+PreConditions:
+  – Service provider is logged in.
+  – At least one user-submitted collection request exists.
+Triggers:
+  – Service provider checks pending requests.
+  – Platform notifies the provider of a new collection request.
+MainScenario:
+  1. Service provider accesses the "Pending Collection Requests" list.
+  2. Service provider opens a specific request to view details.
+  3. Service provider checks availability/capacity for the requested date/time.
+  4. Service provider accepts the request if feasible (or indicates a suitable timeslot).
+  5. System notifies the user that the request is accepted and scheduling is finalized.
+  6. Service provider dispatches a team or vehicle on the scheduled date.
+  7. Service provider updates the request status to "Collected" upon completion.
+PostConditions:
+  – The collection request is accepted and scheduled (or declined).
+  – Request status is updated so the user sees the assigned provider/timeframe.
+Extensions:
+  – Service provider declines request (no capacity or schedule conflict).
+  – Changes after acceptance (user modifies date/quantity, requiring new confirmation).
+  – Technical issues (portal down, missing request data).
+
+--------------------------------------------------------------------------------
+Title: Handling Transport Requests
+--------------------------------------------------------------------------------
+ID: UC9
+Actor: Service Provider
+Description: The service provider reviews and fulfills user-submitted transport requests for waste.
+PreConditions:
+  – Service provider is logged in.
+  – At least one user-submitted transport request exists.
+Triggers:
+  – Provider checks for new transport requests.
+  – Platform notifies provider of a new transport request.
+MainScenario:
+  1. Service Provider views the "Pending Transport Requests" queue.
+  2. Service Provider opens a request to see details (waste type, distance, quantity, timeframe).
+  3. Service Provider checks vehicle availability/logistics feasibility.
+  4. Service Provider confirms acceptance if feasible.
+  5. Service Provider schedules transport date/time and route planning.
+  6. System notifies the user of acceptance and schedule.
+  7. Service Provider performs pickup, transit, and drop-off on the scheduled date.
+  8. Service Provider marks the request as "Completed" or "Delivered".
+PostConditions:
+  – Transport request is scheduled, assigned, and completed.
+  – User sees the confirmed arrangement and final status.
+Extensions:
+  – Service Provider rejects or adjusts request (distance too far, timeframe conflict).
+  – Vehicle/logistics constraints (inappropriate vehicle type/capacity).
+  – Technical issues (portal downtime, data corruption).
+
+--------------------------------------------------------------------------------
+Title: Tracking Waste Journey
+--------------------------------------------------------------------------------
+ID: UC10
+Actor: User
+Description: User tracks the journey of waste from collection to final treatment.
+PreConditions:
+  – User is logged in.
+  – Waste has been collected and is in the process of being treated.
+Triggers:
+  – User wants to know the status of their waste.
+MainScenario:
+  1. User accesses the waste tracking feature.
+  2. User inputs the tracking code.
+  3. System displays the current status and location of the waste.
+PostConditions:
+  – User is notified about the waste journey status.
+Extensions:
+  – Invalid tracking code.
+  – Technical issues in tracking system.
+
+--------------------------------------------------------------------------------
+Title: Viewing Service Requests and Status
+--------------------------------------------------------------------------------
+ID: UC11
+Actor: User
+Description: User views and tracks the status of their service requests.
+PreConditions:
+  – User is logged in.
+  – User has made one or more service requests.
+Triggers:
+  – User wants to check the status of a service request.
+MainScenario:
+  1. User accesses their service request history.
+  2. User selects a request to view details.
+  3. System displays the current status and details of the request.
+PostConditions:
+  – User is informed about the status of their service requests.
+Extensions:
+  – Service request not found.
+  – Technical issues accessing request details.
+
+--------------------------------------------------------------------------------
+Title: Cancelling Service Requests
+--------------------------------------------------------------------------------
+ID: UC12
+Actor: User
+Description: User cancels a previously submitted waste collection or transport service request.
+PreConditions:
+  – User is logged in.
+  – User has an active service request that has not yet been fulfilled.
+Triggers:
+  – User decides to cancel a pending service request.
+MainScenario:
+  1. User navigates to their service request history.
+  2. User selects a pending request.
+  3. User initiates the cancellation process.
+  4. System confirms the cancellation.
+PostConditions:
+  – The service request is cancelled and its status is updated accordingly.
+Extensions:
+  – Request already processed or cancellation window expired.
+  – Technical issues during cancellation.
+
+--------------------------------------------------------------------------------
+Title: Editing Recyclable Waste Product Listing
+--------------------------------------------------------------------------------
+ID: UC13
+Actor: User
+Description: User updates or modifies details of a previously listed recyclable waste product.
+PreConditions:
+  – User is logged in.
+  – User has an active product listing on the platform.
+Triggers:
+  – User opts to edit an existing product listing.
+MainScenario:
+  1. User accesses their product listings.
+  2. User selects the listing to edit.
+  3. User updates the product details.
+  4. User submits the changes.
+  5. System validates and updates the listing.
+PostConditions:
+  – The product listing is updated with the new details.
+Extensions:
+  – Invalid updated details were provided.
+  – Technical issues during the update process.
+
+--------------------------------------------------------------------------------
+Title: Searching for Recyclable Waste Products
+--------------------------------------------------------------------------------
+ID: UC14
+Actor: User
+Description: User searches and filters through recyclable waste product listings to quickly find items of interest.
+PreConditions:
+  – User is logged in.
+  – Recyclable waste product listings are available on the platform.
+Triggers:
+  – User initiates a search using keywords, categories, or filters.
+MainScenario:
+  1. User navigates to the product listings or search page.
+  2. User enters search criteria (keywords, category filters, location, etc.).
+  3. System processes the search request and displays relevant product listings.
+  4. User reviews the search results and selects a product for further details.
+PostConditions:
+  – User is presented with a filtered list of recyclable waste products that match the search criteria.
+Extensions:
+  – No products match the search criteria.
+  – Technical issues during search processing.
+
+--------------------------------------------------------------------------------
+Title: User Account Soft Deactivation
+--------------------------------------------------------------------------------
+ID: UC15
+Actor: User
+Description: A user deactivates their account from the platform.
+PreConditions:
+  – User is logged in.
+Triggers:
+  – User opts to deactivate his account.
+MainScenario:
+  1. User navigates to account settings.
+  2. User selects the account deactivation/deletion option.
+  3. System prompts for confirmation and may request a reason.
+  4. User confirms the action.
+  5. System deactivates the account.
+  6. User receives confirmation of the account deactivation via email.
+PostConditions:
+  – User account is deactivated and cannot be used to log in.
+Extensions:
+  – User cancels the deactivation process.
+  – Technical issues during account deactivation.
+
+-------------------------------------------------------------------------------
+Title: User Logout
+--------------------------------------------------------------------------------
+ID: UC16
+Actor: User, Platform Manager, Service Provider
+Description: User logs out of the platform to end their session.
+PreConditions:
+  – User is logged in.
+Triggers:
+  – User selects the logout option.
+MainScenario:
+  1. User clicks on the "Logout" button.
+  2. System terminates the user’s session.
+  3. User is redirected to the homepage or login page.
+PostConditions:
+  – User is logged out of the platform.
+Extensions:
+  – Technical issues during the logout process.
+
+--------------------------------------------------------------------------------
+Title: Managing Platform Services
+--------------------------------------------------------------------------------
+ID: UC17
+Actor: Platform Manager
+Description: Platform manager oversees and manages the services offered on the platform.
+PreConditions:
+  – Platform Manager is logged in.
+  – Services are active on the platform.
+Triggers:
+  – Regular management or response to service-related issues.
+MainScenario:
+  1. Platform Manager accesses the management portal.
+  2. Platform Manager reviews and updates service listings.
+  3. Platform Manager addresses any service-related issues or feedback.
+PostConditions:
+  – Platform services are effectively managed and updated.
+Extensions:
+  – Unauthorized access attempt.
+  – Technical issues in the management portal.
+
+--------------------------------------------------------------------------------
+Title: Managing Service Providers
+--------------------------------------------------------------------------------
+ID: UC18
+Actor: Platform Manager
+Description: Platform manager oversees and manages the profiles and contracts of service providers (e.g., waste collectors, transport companies).
+PreConditions:
+  – Platform Manager is logged in.
+  – Service providers are registered or have applied to be part of the platform.
+Triggers:
+  – Regular management review, new provider applications, performance issues.
+MainScenario:
+  1. Platform Manager accesses the service provider management portal.
+  2. Platform Manager reviews service provider profiles and performance metrics (e.g., company details, service areas, qualifications).
+  3. Platform Manager approves, updates, or deactivates service provider profiles as needed (e.g., service areas, availability).
+  4. System notifies providers of changes.
+PostConditions:
+  – Approved providers are activated and visible on the platform.
+  – Provider details are updated or deactivated as needed.
+Extensions:
+  – Incomplete provider application.
+  – Disputes or non-compliance with service standards.
+  – Technical issues in provider management.
+
+--------------------------------------------------------------------------------
+Title: Update Service Provider Profile
+--------------------------------------------------------------------------------
+ID: UC19
+Actor: Service Provider
+Description: Service Provider updates their profile details.
+PreConditions:
+  – Service Provider is logged in.
+Triggers:
+  – Service Provider selects "Edit Profile" in the provider portal.
+MainScenario:
+  1. Service Provider accesses the provider portal.
+  2. Service Provider navigates to their profile settings.
+  3. Service Provider updates fields (e.g., service areas, vehicle types, availability schedule).
+  4. Service Provider submits changes.
+  5. System validates and saves updates.
+PostConditions:
+  – Service Provider profile reflects updated details.
+Extensions:
+  – Invalid updates (e.g., overlapping time entries).
+  – Technical errors during submission.
+
+--------------------------------------------------------------------------------
+Title: Manage Collection/Recycling Points
+--------------------------------------------------------------------------------
+ID: UC20
+Actor: Platform Manager
+Description: Platform Manager adds, updates, or deactivates collection and recycling locations.
+PreConditions:
+  – Platform Manager is logged in.
+Triggers:
+  – Platform Manager selects "Manage Collection Points" in the admin dashboard.
+MainScenario:
+  1. Platform Manager navigates to the "Manage Collection Points" section.
+  2. Platform Manager creates or edits a location (e.g., name, facility type, operating hours).
+  3. System validates the address and operating hours for consistency.
+  4. System saves the updated location details.
+PostConditions:
+  – The collection/recycling location’s information is updated and visible on the platform.
+Extensions:
+  – Invalid address or operating hours entered.
+  – Duplicate location detected → System blocks duplication and alerts Platform Manager.
+
+--------------------------------------------------------------------------------
+Title: Manage User Roles
+--------------------------------------------------------------------------------
+ID: UC21
+Actor: Platform Manager
+Description: Platform Manager assigns or updates user roles, such as promoting a user to a service provider.
+PreConditions:
+  – Platform Manager is logged in.
+  – Target user exists in the system.
+Triggers:
+  – User requests a role change or Platform Manager identifies a need.
+MainScenario:
+  1. Platform Manager searches for the user’s profile.
+  2. Platform Manager selects a new role (e.g., service provider).
+  3. System validates the role transition (e.g., ensuring only authorized role changes are allowed).
+  4. System updates the user’s role.
+PostConditions:
+  – User’s role is updated, granting new permissions.
+Extensions:
+  – Invalid role assignment (e.g., assigning service provider privileges to a regular user).
+  – Target user not found.
+
+--------------------------------------------------------------------------------
+Title: Viewing Collection and Recycling Points
+--------------------------------------------------------------------------------
+ID: UC22
+Actor: User
+Description: User views the locations of collection and recycling points.
+PreConditions:
+  – User is logged in.
+  – Collection and recycling points are registered on the platform.
+Triggers:
+  – User wishes to locate a collection or recycling point.
+MainScenario:
+  1. User accesses the map or list of points.
+  2. User browses or searches for specific locations.
+  3. User views details of selected points.
+PostConditions:
+  – User is informed about the locations.
+Extensions:
+  – No points in the user's area.
+  – Technical issues accessing the map or list.

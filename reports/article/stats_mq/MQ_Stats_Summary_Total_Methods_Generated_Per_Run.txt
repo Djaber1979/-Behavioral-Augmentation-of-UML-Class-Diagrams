@@ -1,0 +1,60 @@
+--- MQ Statistical Analysis (Total_Methods_Generated_Per_Run) ---
+
+Descriptive Statistics for Method Quantity:
+                              count  mean        std   min    25%   50%    75%   max
+Model                                                                               
+ChatGPT-4o                     10.0  27.5   4.428443  18.0  26.00  27.5  30.75  33.0
+ChatGPT-o3                     10.0  43.2  12.363027  25.0  37.25  44.0  48.50  61.0
+Claude3.7                      10.0  73.4   7.676805  63.0  68.50  71.5  80.25  85.0
+DeepSeek(R1)                   10.0  31.6   8.058122  14.0  28.50  33.0  37.00  42.0
+Gemini-2.5-Pro-Preview-05-06   10.0  47.7  19.607538  20.0  38.50  45.0  59.00  79.0
+Grok3                          10.0  29.4  20.216605   8.0  13.50  27.0  32.00  72.0
+Llama4                         10.0  26.8   7.420692  17.0  21.75  24.5  31.75  40.0
+Mistral                        10.0  20.4   1.837873  18.0  18.50  21.0  21.75  23.0
+Qwen3                          10.0  37.3   8.353974  28.0  33.00  35.5  39.25  58.0
+
+--- Assumption Checks ---
+Shapiro-Wilk Normality Test (p > 0.05 suggests normality):
+  Model ChatGPT-4o (N=10): W=0.934, p=0.4900 (Normal)
+  Model ChatGPT-o3 (N=10): W=0.934, p=0.4922 (Normal)
+  Model Claude3.7 (N=10): W=0.929, p=0.4384 (Normal)
+  Model DeepSeek(R1) (N=10): W=0.936, p=0.5064 (Normal)
+  Model Gemini-2.5-Pro-Preview-05-06 (N=10): W=0.945, p=0.6067 (Normal)
+  Model Grok3 (N=10): W=0.882, p=0.1389 (Normal)
+  Model Llama4 (N=10): W=0.952, p=0.6872 (Normal)
+  Model Mistral (N=10): W=0.877, p=0.1219 (Normal)
+  Model Qwen3 (N=10): W=0.832, p=0.0355 (Not Normal)
+
+Levene's Test: Statistic=3.284, p=0.0027 (Not Homogeneous)
+Decision: Use Non-Parametric (Kruskal-Wallis) based on assumptions.
+
+--- Omnibus Test ---
+Kruskal-Wallis Results:
+        Source  ddof1        H  p-unc
+Kruskal  Model      8  51.8486    0.0
+Kruskal-Wallis: H=51.849, p=0.0000, Epsilon-squared (ε²)=N/A
+
+--- Post-Hoc Tests (Bonferroni Corrected) ---
+Dunn's Test Results:
+                              ChatGPT-4o  ChatGPT-o3  Claude3.7  DeepSeek(R1)  Gemini-2.5-Pro-Preview-05-06   Grok3  Llama4  Mistral   Qwen3
+ChatGPT-4o                        1.0000      0.7740     0.0004        1.0000                        0.5670  1.0000  1.0000   1.0000  1.0000
+ChatGPT-o3                        0.7740      1.0000     1.0000        1.0000                        1.0000  0.9995  0.4004   0.0028  1.0000
+Claude3.7                         0.0004      1.0000     1.0000        0.0172                        1.0000  0.0007  0.0001   0.0000  0.3326
+DeepSeek(R1)                      1.0000      1.0000     0.0172        1.0000                        1.0000  1.0000  1.0000   0.4153  1.0000
+Gemini-2.5-Pro-Preview-05-06      0.5670      1.0000     1.0000        1.0000                        1.0000  0.7397  0.2860   0.0017  1.0000
+Grok3                             1.0000      0.9995     0.0007        1.0000                        0.7397  1.0000  1.0000   1.0000  1.0000
+Llama4                            1.0000      0.4004     0.0001        1.0000                        0.2860  1.0000  1.0000   1.0000  1.0000
+Mistral                           1.0000      0.0028     0.0000        0.4153                        0.0017  1.0000  1.0000   1.0000  0.0228
+Qwen3                             1.0000      1.0000     0.3326        1.0000                        1.0000  1.0000  1.0000   0.0228  1.0000
+
+Rank-Biserial Correlation for significant Dunn's pairs (from pairwise Mann-Whitney U):
+  ChatGPT-4o vs Claude3.7 (pDunn=0.0004): r_rb = 1.000 (manual)
+  ChatGPT-o3 vs Mistral (pDunn=0.0028): r_rb = -1.000 (manual)
+  Claude3.7 vs DeepSeek(R1) (pDunn=0.0172): r_rb = -1.000 (manual)
+  Claude3.7 vs Grok3 (pDunn=0.0007): r_rb = -0.890 (manual)
+  Claude3.7 vs Llama4 (pDunn=0.0001): r_rb = -1.000 (manual)
+  Claude3.7 vs Mistral (pDunn=0.0000): r_rb = -1.000 (manual)
+  Gemini-2.5-Pro-Preview-05-06 vs Mistral (pDunn=0.0017): r_rb = -0.830 (manual)
+  Mistral vs Qwen3 (pDunn=0.0228): r_rb = 1.000 (manual)
+
+Box plot saved to: reports\article\MQ_Boxplot_Total_Methods_Generated_Per_Run.png

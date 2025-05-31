@@ -1,0 +1,109 @@
+{
+  "UC1": [
+    {"action": "Validate email format", "ideal_method": "validateEmailFormat", "assigned_class": "UserProfile", "expected_parameter_concepts": ["emailString"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Validate password strength", "ideal_method": "validatePasswordStrength", "assigned_class": "UserCredentials", "expected_parameter_concepts": ["passwordString"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Create an unverified user account", "ideal_method": "createUnverifiedAccount", "assigned_class": "UserAccount", "expected_parameter_concepts": ["registrationDetails"], "expected_return_concept": "userAccountInstance"},
+    {"action": "Send verification email", "ideal_method": "sendVerificationEmail", "assigned_class": "NotificationService", "expected_parameter_concepts": ["recipientEmail", "verificationToken"], "expected_return_concept": "voidOperation"},
+    {"action": "Verify email", "ideal_method": "verifyEmail", "assigned_class": "UserProfile", "expected_parameter_concepts": ["verificationToken"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Activate account", "ideal_method": "activateAccount", "assigned_class": "UserAccount", "expected_parameter_concepts": [], "expected_return_concept": "voidOperation"},
+    {"action": "Confirm successful registration", "ideal_method": "confirmRegistration", "assigned_class": "NotificationService", "expected_parameter_concepts": ["recipientEmail"], "expected_return_concept": "voidOperation"}
+  ],
+  "UC2": [
+    {"action": "Validate credentials", "ideal_method": "validateCredentials", "assigned_class": "UserCredentials", "expected_parameter_concepts": ["email", "password"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Grant role access", "ideal_method": "grantRoleAccess", "assigned_class": "RoleManager", "expected_parameter_concepts": ["userId", "userRole"], "expected_return_concept": "accessGrantStatus"},
+    {"action": "Record login timestamp", "ideal_method": "recordLoginTime", "assigned_class": "UserCredentials", "expected_parameter_concepts": [], "expected_return_concept": "voidOperation"}
+  ],
+  "UC3": [
+    {"action": "Generate and store password reset token", "ideal_method": "generateAndStorePasswordResetToken", "assigned_class": "UserCredentials", "expected_parameter_concepts": [], "expected_return_concept": "resetToken"},
+    {"action": "Send password reset link email", "ideal_method": "sendPasswordResetLinkEmail", "assigned_class": "NotificationService", "expected_parameter_concepts": ["recipientEmail", "resetLink"], "expected_return_concept": "voidOperation"},
+    {"action": "Update password using reset token", "ideal_method": "updatePasswordWithToken", "assigned_class": "UserCredentials", "expected_parameter_concepts": ["resetToken", "newPassword"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Notify user of password reset confirmation", "ideal_method": "notifyPasswordResetConfirmation", "assigned_class": "NotificationService", "expected_parameter_concepts": ["recipientEmail"], "expected_return_concept": "voidOperation"}
+  ],
+  "UC4": [
+    {"action": "Validate profile updated data", "ideal_method": "validateProfileUpdate", "assigned_class": "UserProfile", "expected_parameter_concepts": ["profileUpdateData"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Update user profile", "ideal_method": "updateProfile", "assigned_class": "UserProfile", "expected_parameter_concepts": ["profileUpdateData"], "expected_return_concept": "voidOperation"},
+    {"action": "Record profile modification timestamp", "ideal_method": "recordProfileModificationTime", "assigned_class": "UserProfile", "expected_parameter_concepts": [], "expected_return_concept": "voidOperation"}
+  ],
+  "UC5": [
+    {"action": "Validate product listing details", "ideal_method": "validateProductListing", "assigned_class": "Product", "expected_parameter_concepts": ["productListingDetails"], "expected_return_concept": "validationResultInstance"},
+    {"action": "List product", "ideal_method": "listProduct", "assigned_class": "Product", "expected_parameter_concepts": ["productListingDetails"], "expected_return_concept": "productInstance"}
+  ],
+  "UC6": [
+    {"action": "Submit service request", "ideal_method": "submitServiceRequest", "assigned_class": "ServiceRequest", "expected_parameter_concepts": ["serviceRequestDetails"], "expected_return_concept": "serviceRequestInstance"},
+    {"action": "Receive service request", "ideal_method": "receiveServiceRequest", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["serviceRequestId"], "expected_return_concept": "voidOperation"},
+    {"action": "Schedule transport service", "ideal_method": "scheduleTransportService", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["transportRequestId", "scheduleDetails"], "expected_return_concept": "scheduleOutcome"},
+    {"action": "Schedule collection service", "ideal_method": "scheduleCollectionService", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["collectionRequestId", "scheduleDetails"], "expected_return_concept": "scheduleOutcome"}
+  ],
+  "UC7": [],
+  "UC8": [
+    {"action": "Check provider availability for collection", "ideal_method": "checkProviderAvailability", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["requestedTimeslot", "location"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Check provider capacity for collection", "ideal_method": "checkProviderCapacity", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["wasteVolume", "wasteType"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Accept collection request", "ideal_method": "acceptCollectionRequest", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["collectionRequestId"], "expected_return_concept": "acceptanceOutcome"},
+    {"action": "Indicate suitable timeslot for collection", "ideal_method": "proposeCollectionTimeslot", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["collectionRequestId"], "expected_return_concept": "timeslotProposal"},
+    {"action": "Notify user of request acceptance", "ideal_method": "notifyRequestAccepted", "assigned_class": "NotificationService", "expected_parameter_concepts": ["userId", "requestId", "scheduleDetails"], "expected_return_concept": "voidOperation"},
+    {"action": "Finalize collection schedule", "ideal_method": "finalizeCollectionSchedule", "assigned_class": "CollectionRequest", "expected_parameter_concepts": ["agreedTimeslot"], "expected_return_concept": "voidOperation"},
+    {"action": "Dispatch collection team", "ideal_method": "dispatchCollectionTeam", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["collectionRequestId", "teamDetails"], "expected_return_concept": "dispatchConfirmation"},
+    {"action": "Dispatch collection vehicle", "ideal_method": "dispatchCollectionVehicle", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["collectionRequestId", "vehicleDetails"], "expected_return_concept": "dispatchConfirmation"},
+    {"action": "Update request status to collected", "ideal_method": "markRequestCollected", "assigned_class": "ServiceRequest", "expected_parameter_concepts": ["collectionProof"], "expected_return_concept": "voidOperation"}
+  ],
+  "UC9": [
+    {"action": "Check vehicle availability", "ideal_method": "checkVehicleAvailability", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["requiredVehicleType", "duration"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Check logistics feasibility", "ideal_method": "checkLogistics", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["routeDetails", "wasteType", "volume"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Accept transport request", "ideal_method": "acceptTransportRequest", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["transportRequestId"], "expected_return_concept": "acceptanceOutcome"},
+    {"action": "Schedule transport", "ideal_method": "scheduleTransport", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["transportRequestId", "scheduleDetails"], "expected_return_concept": "scheduleConfirmation"},
+    {"action": "Plan route", "ideal_method": "planRoute", "assigned_class": "RoutePlan", "expected_parameter_concepts": ["startLocation", "endLocation", "waypoints"], "expected_return_concept": "routePlanInstance"},
+    {"action": "Notify user of request acceptance", "ideal_method": "notifyRequestAccepted", "assigned_class": "NotificationService", "expected_parameter_concepts": ["userId", "requestId", "scheduleDetails"], "expected_return_concept": "voidOperation"},
+    {"action": "Notify user of transport schedule", "ideal_method": "notifyTransportScheduled", "assigned_class": "NotificationService", "expected_parameter_concepts": ["userId", "requestId", "transportDetails"], "expected_return_concept": "voidOperation"},
+    {"action": "Perform transport pickup", "ideal_method": "performTransportPickup", "assigned_class": "TransportRequest", "expected_parameter_concepts": ["pickupConfirmationDetails"], "expected_return_concept": "voidOperation"},
+    {"action": "Perform transport drop-off", "ideal_method": "performTransportDropoff", "assigned_class": "TransportRequest", "expected_parameter_concepts": ["dropoffConfirmationDetails"], "expected_return_concept": "voidOperation"},
+    {"action": "Update request status to completed", "ideal_method": "markRequestCompleted", "assigned_class": "ServiceRequest", "expected_parameter_concepts": ["completionProof"], "expected_return_concept": "voidOperation"}
+  ],
+  "UC10": [
+    {"action": "Get waste journey status", "ideal_method": "getStatus", "assigned_class": "WasteJourney", "expected_parameter_concepts": [], "expected_return_concept": "trackingStatusValue"},
+    {"action": "Get location details", "ideal_method": "getLocationDetails", "assigned_class": "WasteJourney", "expected_parameter_concepts": [], "expected_return_concept": "addressInstance"}
+  ],
+  "UC11": [
+    {"action": "Get service request status", "ideal_method": "getServiceRequestStatus", "assigned_class": "ServiceRequest", "expected_parameter_concepts": [], "expected_return_concept": "requestStatusValue"}
+  ],
+  "UC12": [
+    {"action": "Cancel service request", "ideal_method": "cancelRequest", "assigned_class": "ServiceRequest", "expected_parameter_concepts": ["cancellationReason"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Confirm cancellation (notification)", "ideal_method": "confirmCancellation", "assigned_class": "NotificationService", "expected_parameter_concepts": ["userId", "requestId"], "expected_return_concept": "voidOperation"}
+  ],
+  "UC13": [
+    {"action": "Validate listing updates", "ideal_method": "validateListingUpdate", "assigned_class": "Product", "expected_parameter_concepts": ["listingUpdateData"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Update product listing", "ideal_method": "updateProductListing", "assigned_class": "Product", "expected_parameter_concepts": ["listingUpdateData"], "expected_return_concept": "voidOperation"}
+  ],
+  "UC14": [],
+  "UC15": [
+    {"action": "Request account deactivation", "ideal_method": "requestAccountDeactivation", "assigned_class": "UserAccount", "expected_parameter_concepts": ["deactivationReason"], "expected_return_concept": "deactivationRequestStatus"},
+    {"action": "Deactivate account", "ideal_method": "deactivateAccount", "assigned_class": "UserAccount", "expected_parameter_concepts": [], "expected_return_concept": "voidOperation"},
+    {"action": "Send account deactivation confirmation email", "ideal_method": "sendDeactivationConfirmation", "assigned_class": "NotificationService", "expected_parameter_concepts": ["recipientEmail"], "expected_return_concept": "voidOperation"}
+  ],
+  "UC16": [],
+  "UC17": [
+    {"action": "Address service request issue", "ideal_method": "addressReportedIssue", "assigned_class": "ServiceRequest", "expected_parameter_concepts": ["issueIdentifier", "resolutionDetails"], "expected_return_concept": "validationResultInstance"}
+  ],
+  "UC18": [
+    {"action": "Approve service provider profile", "ideal_method": "approveProfile", "assigned_class": "ServiceProvider", "expected_parameter_concepts": [], "expected_return_concept": "voidOperation"},
+    {"action": "Update service provider profile by admin", "ideal_method": "updateProfileByAdmin", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["providerProfileData"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Deactivate service provider profile", "ideal_method": "deactivateProfile", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["deactivationReason"], "expected_return_concept": "voidOperation"},
+    {"action": "Notify provider of status change", "ideal_method": "notifyProviderStatusChange", "assigned_class": "NotificationService", "expected_parameter_concepts": ["providerId", "newStatus", "reason"], "expected_return_concept": "voidOperation"}
+  ],
+  "UC19": [
+    {"action": "Validate provider updates", "ideal_method": "validateProviderUpdates", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["providerUpdateData"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Update service provider details", "ideal_method": "updateServiceProviderDetails", "assigned_class": "ServiceProvider", "expected_parameter_concepts": ["providerUpdateData"], "expected_return_concept": "voidOperation"}
+  ],
+  "UC20": [
+    {"action": "Create collection point", "ideal_method": "createCollectionPoint", "assigned_class": "CollectionPoint", "expected_parameter_concepts": ["collectionPointDetails"], "expected_return_concept": "collectionPointInstance"},
+    {"action": "Edit location", "ideal_method": "editLocation", "assigned_class": "CollectionPoint", "expected_parameter_concepts": ["newLocationData"], "expected_return_concept": "voidOperation"},
+    {"action": "Validate location details", "ideal_method": "validateLocationDetails", "assigned_class": "Address", "expected_parameter_concepts": ["addressData"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Validate operating hours", "ideal_method": "validateOperatingHours", "assigned_class": "OpeningHours", "expected_parameter_concepts": ["operatingHoursData"], "expected_return_concept": "validationResultInstance"}
+  ],
+  "UC21": [
+    {"action": "Validate role transition", "ideal_method": "validateRoleTransition", "assigned_class": "RoleManager", "expected_parameter_concepts": ["currentRole", "targetRole", "userId"], "expected_return_concept": "validationResultInstance"},
+    {"action": "Assign role", "ideal_method": "assignRole", "assigned_class": "RoleManager", "expected_parameter_concepts": ["userId", "newRole"], "expected_return_concept": "voidOperation"}
+  ],
+  "UC22": [
+    {"action": "Get collection point location details", "ideal_method": "getLocationDetails", "assigned_class": "CollectionPoint", "expected_parameter_concepts": [], "expected_return_concept": "addressInstance"}
+  ]
+}

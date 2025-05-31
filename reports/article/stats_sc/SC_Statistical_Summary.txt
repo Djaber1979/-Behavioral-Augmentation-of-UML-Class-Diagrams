@@ -1,0 +1,16 @@
+
+--- Statistical Analysis for Syntactic Correctness (SC) ---
+
+Contingency Table for Chi-squared (Syntactic Correctness):
+                              Correct_Diagrams  Errored_Diagrams
+LLM                                                             
+ChatGPT-4o                                   9                 1
+ChatGPT-o3                                  10                 0
+Claude3.7                                   10                 0
+DeepSeek(R1)                                 9                 1
+Gemini-2.5-Pro-Preview-05-06                 8                 2
+Grok3                                        9                 1
+Llama4                                       9                 1
+Mistral                                     10                 0
+Qwen3                                       10                 0
+Chi-squared Test (Overall Correctness): Chi2=6.429, p=0.5993, df=8

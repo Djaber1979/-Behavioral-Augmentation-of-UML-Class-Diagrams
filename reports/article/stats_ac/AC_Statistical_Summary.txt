@@ -1,0 +1,32 @@
+--- Annotation Completeness (AC) Analysis ---
+Confirmed: No methods found in 'Action-only' category.
+
+Annotation Counts per Model:
+AnnotationCategory            Full  UC-only  None
+Model                                            
+ChatGPT-4o                      88      174    13
+ChatGPT-o3                     358        0    74
+Claude3.7                      661        0    73
+DeepSeek(R1)                   156       28   132
+Gemini-2.5-Pro-Preview-05-06   310        0   167
+Grok3                           58        0   236
+Llama4                           0      238    30
+Mistral                          0      171    33
+Qwen3                          169       31   173
+
+Annotation Percentages per Model:
+AnnotationCategory             Full  UC-only   None
+Model                                              
+ChatGPT-4o                    32.00    63.27   4.73
+ChatGPT-o3                    82.87     0.00  17.13
+Claude3.7                     90.05     0.00   9.95
+DeepSeek(R1)                  49.37     8.86  41.77
+Gemini-2.5-Pro-Preview-05-06  64.99     0.00  35.01
+Grok3                         19.73     0.00  80.27
+Llama4                         0.00    88.81  11.19
+Mistral                        0.00    83.82  16.18
+Qwen3                         45.31     8.31  46.38
+
+--- Statistical Tests for Annotation Completeness ---
+Chi-squared Test (Annotation Categories): Chi2=3001.067, p=0.0000, df=16
+  Cramér's V (Annotation Categories): 0.667

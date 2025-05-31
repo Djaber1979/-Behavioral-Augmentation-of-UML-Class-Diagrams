@@ -1,0 +1,16 @@
+--- SR4: Return Types ---
+
+Percentage of Non-Void Return Types:
+                          Model  Ret_Percent_NonVoid
+7                       Mistral                77.45
+2                     Claude3.7                54.50
+3                  DeepSeek(R1)                45.25
+1                    ChatGPT-o3                39.58
+5                         Grok3                35.71
+0                    ChatGPT-4o                35.27
+4  Gemini-2.5-Pro-Preview-05-06                33.54
+8                         Qwen3                26.54
+6                        Llama4                12.31
+
+Chi-squared Test (Return Types): Chi2=312.381, p=0.0000, df=8
+Cramér's V (Return Types): 0.304

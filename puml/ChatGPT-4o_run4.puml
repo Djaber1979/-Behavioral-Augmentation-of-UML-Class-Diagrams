@@ -1,0 +1,84 @@
+@startuml
+' Modified methods reflecting UC1 to UC22 (excluding UI/infrastructure details)
+
+' ──────────────────────────────────────────────
+'  USER MANAGEMENT UPDATES
+' ──────────────────────────────────────────────
+class UserAccount {
+  +registerAccount(email: String, password: String): ValidationResult        //UC1
+  +activateAccount(): void                                                  //UC1
+  +deactivateAccount(reason: String): void                                  //UC15
+  +lockAccount(): void                                                      //UC2
+  +recordLoginTimestamp(): void                                             //UC2
+}
+
+class UserCredentials {
+  +validateCredentials(email: String, password: String): ValidationResult    //UC2
+  +resetPassword(newPassword: String): ValidationResult                     //UC3
+  +generateResetToken(): String                                             //UC3
+  +validateResetToken(token: String): Boolean                               //UC3
+}
+
+class UserProfile {
+  +updateProfileInfo(name: String, phoneNumber: String, address: Address): ValidationResult  //UC4
+  +verifyEmail(): void                                                                       //UC1
+}
+
+class RoleManager {
+  +updateUserRole(userId: UUID, newRole: UserRole): ValidationResult         //UC21
+}
+
+' ──────────────────────────────────────────────
+'  PRODUCT MANAGEMENT UPDATES
+' ──────────────────────────────────────────────
+class Product {
+  +createListing(name: String, description: String, category: ProductCategory, inventory: Integer): ValidationResult  //UC5
+  +updateListing(name: String, description: String, category: ProductCategory, inventory: Integer): ValidationResult  //UC13
+  +publishListing(): void                                                                                            //UC5
+}
+
+class SearchFilter {
+  +filterProducts(): List<Product>                                           //UC14
+}
+
+' ──────────────────────────────────────────────
+'  SERVICE MANAGEMENT UPDATES
+' ──────────────────────────────────────────────
+class ServiceRequest {
+  +cancelRequest(by: UserProfile): void                                      //UC12
+}
+
+class CollectionRequest {
+  +submitCollectionRequest(requester: UserProfile, scheduledTime: TimeRange, location: Address, vehicleType: VehicleType, quantity: Integer, categories: ProductCategory[]): ValidationResult  //UC6
+  +acceptRequest(provider: ServiceProvider, scheduledTime: TimeRange): void  //UC8
+  +markCollected(): void                                                     //UC8
+}
+
+class TransportRequest {
+  +submitTransportRequest(requester: UserProfile, scheduledTime: TimeRange, routePlan: RoutePlan, quantity: Integer, categories: ProductCategory[]): ValidationResult //UC6
+  +acceptRequest(provider: ServiceProvider, scheduledTime: TimeRange): void  //UC9
+  +markCompleted(): void                                                     //UC9
+}
+
+' ──────────────────────────────────────────────
+'  WASTE TRACKING UPDATES
+' ──────────────────────────────────────────────
+class WasteJourney {
+  +trackByCode(code: String): WasteJourney                                   //UC10
+}
+
+' ──────────────────────────────────────────────
+'  LOCATION MANAGEMENT UPDATES
+' ──────────────────────────────────────────────
+class CollectionPoint {
+  +updateLocation(name: String, type: PointType, position: Coordinates, operatingHours: OpeningHours[]): ValidationResult  //UC20
+}
+
+' ──────────────────────────────────────────────
+'  SERVICE PROVIDER PROFILE UPDATES
+' ──────────────────────────────────────────────
+class ServiceProvider {
+  +updateProviderProfile(companyName: String, profile: UserProfile): ValidationResult  //UC19
+}
+
+@enduml

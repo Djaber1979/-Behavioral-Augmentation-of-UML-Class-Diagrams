@@ -1,0 +1,10 @@
+model,Top_37_Covered_Count,Top_37_Coverage_Percent
+Qwen3,32,86.49
+ChatGPT-4o,31,83.78
+DeepSeek(R1),31,83.78
+Grok3,30,81.08
+Claude3.7,30,81.08
+Gemini-2.5-Pro-Preview-05-06,29,78.38
+ChatGPT-o3,29,78.38
+Llama4,27,72.97
+Mistral,16,43.24

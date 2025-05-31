@@ -1,0 +1,357 @@
+@startuml
+left to right direction
+' ──────────────────────────────────────────────
+'  CORE VALUE OBJECTS
+' ──────────────────────────────────────────────
+package "Core Value Objects" {
+enum VerificationStatus {
+VERIFIED
+UNVERIFIED
+}
+enum VehicleType {
+TRUCK
+VAN
+CARGO_BIKE
+BICYCLE
+MOTORCYCLE
+COMPACTOR
+ELECTRIC_VAN
+CARGO_VAN
+}
+enum DayOfWeek {
+MON
+TUE
+WED
+THU
+FRI
+SAT
+SUN
+}
+class ValidationResult {
+valid    : Boolean
+messages : String[]
++addMessage(message: String) : void //UC1 //action: add validation message
++isValid() : Boolean //UC1 //action: check if validation passed
+}
+class Coordinates {
+latitude  : Float
+longitude : Float
++calculateDistance(other: Coordinates) : Float //UC14 //action: calculate distance between coordinates
+}
+class Address {
+street           : String
+city             : String
+zipCode          : String
+country          : String
+position         : Coordinates
+validationStatus : VerificationStatus
++validate() : ValidationResult //UC1 //action: validate address format
++verify() : void //UC1 //action: mark address as verified
+}
+class TimeRange {
+start : LocalTime
+end   : LocalTime
++overlaps(other: TimeRange) : Boolean //UC19 //action: check time ranges for overlap
++isWithin(other: TimeRange) : Boolean //UC8 //action: check if time range is within another
+}
+class OpeningHours {
+dayOfWeek : DayOfWeek
+timeRange : TimeRange
++isOpenAt(day: DayOfWeek, time: LocalTime) : Boolean //UC20 //action: check if facility is open at specific time
+}
+Address *-- Coordinates
+OpeningHours -- TimeRange
+}
+' ──────────────────────────────────────────────
+'  USER MANAGEMENT
+' ──────────────────────────────────────────────
+package "User Management" {
+enum UserRole {
+USER
+SERVICE_PROVIDER
+PLATFORM_MANAGER
+}
+enum AccountStatus {
+ACTIVE
+DEACTIVATED
+SUSPENDED
+LOCKED
+}
+class UserAccount {
+id               : UUID
+registrationDate : Date
+accountStatus    : AccountStatus
++createAccount(profile: UserProfile, credentials: UserCredentials) : ValidationResult //UC1 //action: create new user account
++setAccountStatus(status: AccountStatus, reason: String) : void //UC15 //action: change account status
++lockAccount() : void //UC2 //action: lock account after failed attempts
++unlockAccount() : void //UC2 //action: unlock a locked account
++deactivateAccount(reason: String) : void //UC15 //action: soft deactivate account
+}
+class UserProfile {
+name                  : String
+email                 : String
+phoneNumber           : String
+address               : Address
+role                  : UserRole
+lastUpdatedDate       : Date
+accountLockedDate     : Date
+emailVerifiedDate     : Date
+emailValidationStatus : VerificationStatus
+deactivationReason    : String
++validateProfile() : ValidationResult //UC1 //action: validate profile information
++updateProfile(name: String, phoneNumber: String, address: Address) : ValidationResult //UC4 //action: update profile information
++verifyEmail() : void //UC1 //action: mark email as verified
++updateLastModified() : void //UC4 //action: update the last modified timestamp
+}
+class UserCredentials {
+encryptedPassword   : String
+lastPasswordReset   : Date
+failedLoginAttempts : Integer
+lastLoginDate       : Date
+passwordResetToken  : String
+tokenExpirationDate : Date
+email               : String
++authenticate(email: String, password: String) : ValidationResult //UC2 //action: authenticate user credentials
++resetPassword(token: String, newPassword: String) : ValidationResult //UC3 //action: reset password with token
++generateResetToken() : String //UC3 //action: generate password reset token
++validateToken(token: String) : ValidationResult //UC3 //action: validate reset token
++incrementFailedAttempts() : Integer //UC2 //action: track failed login attempts
++updateLastLoginDate() : void //UC2 //action: update last login timestamp
++isTokenExpired() : Boolean //UC3 //action: check if reset token is expired
++recordPasswordChange() : void //UC3 //action: record password change time
+}
+class ServiceProvider {
+providerId  : UUID
+companyName : String
+profile     : UserProfile
++updateProfile(companyName: String, profile: UserProfile) : ValidationResult //UC19 //action: update service provider profile
+}
+class "RoleManager <<service>>" as RoleManager {
++assignRole(account: UserAccount, role: UserRole) : ValidationResult //UC21 //action: assign new role to user
++changeRole(account: UserAccount, newRole: UserRole) : ValidationResult //UC21 //action: change user's role
++validateRoleTransition(currentRole: UserRole, newRole: UserRole) : ValidationResult //UC21 //action: validate if role transition is allowed
+}
+UserAccount ..> ValidationResult
+UserProfile ..> ValidationResult
+UserCredentials ..> ValidationResult
+RoleManager ..> ValidationResult
+UserAccount "1" --> "1" UserProfile : has >
+UserAccount "1" --> "1" UserCredentials : authenticates >
+UserAccount --> RoleManager : uses >
+UserAccount "1" -- "0..1" ServiceProvider : may act as >
+}
+' ──────────────────────────────────────────────
+'  SERVICE MANAGEMENT
+' ──────────────────────────────────────────────
+package "Service Management" {
+enum RequestType {
+COLLECTION
+TRANSPORT
+}
+enum RequestStatus {
+PENDING
+SCHEDULED
+COMPLETED
+CANCELLED
+}
+abstract class ServiceRequest {
+id                : UUID
+requestType       : RequestType
+status            : RequestStatus
+createdDate       : Date
+scheduledTime     : TimeRange
+proposedTimeSlots : TimeRange[]
+requester         : UserProfile
+handledBy         : ServiceProvider
+trackedJourney    : WasteJourney
+requestedDate     : Date
+quantity          : Integer
+categories        : ProductCategory[]
+cancelledBy       : UserProfile
+cancelledDate     : Date
++createRequest(requester: UserProfile) : void //UC6 //action: create service request
++validateRequest() : ValidationResult //UC6 //action: validate request data
++scheduleRequest(timeSlot: TimeRange) : void //UC8 //action: schedule request for specific time
++cancelRequest(cancelledBy: UserProfile) : void //UC12 //action: cancel pending request
++assignServiceProvider(provider: ServiceProvider) : void //UC8 //action: assign service provider to request
++completeRequest() : void //UC8 //action: mark request as completed
++proposeTimeSlots(slots: TimeRange[]) : void //UC8 //action: propose available time slots
+}
+class CollectionRequest extends ServiceRequest {
+vehicleType : VehicleType
+location    : Address
++validateCollectionDetails() : ValidationResult //UC6 //action: validate collection-specific details
+}
+class TransportRequest extends ServiceRequest {
+routePlan : RoutePlan
++validateTransportDetails() : ValidationResult //UC6 //action: validate transport-specific details
+}
+class ServiceRequestDetails {
+payload : Map
++addDetail(key: String, value: Object) : void //UC6 //action: add request detail
++getDetail(key: String) : Object //UC11 //action: retrieve request detail
+}
+ServiceRequest ..> ServiceRequestDetails : uses >
+class RoutePlan {
+waypoints : Coordinates[]
++addWaypoint(point: Coordinates) : void //UC9 //action: add waypoint to route
++optimizeRoute() : void //UC9 //action: optimize waypoint sequence
++calculateDistance() : Float //UC9 //action: calculate total route distance
+}
+ServiceProvider "1" --> "*" ServiceRequest : handles >
+TransportRequest -- RoutePlan
+ServiceRequest --> WasteJourney : tracked by >
+ServiceRequest --> UserProfile : requester >
+ServiceRequest --> ServiceProvider : handled by >
+}
+' ──────────────────────────────────────────────
+'  WASTE TRACKING
+' ──────────────────────────────────────────────
+package "Waste Tracking" {
+enum TrackingStatus {
+IN_PROGRESS
+COMPLETED
+CANCELLED
+}
+enum Stage {
+COLLECTED
+IN_TRANSIT
+PROCESSED
+RECYCLED
+}
+class WasteJourney {
+journeyId       : UUID
+trackingCode    : String
+stages          : Stage[]
+status          : TrackingStatus
+currentLocation : Address
++createJourney() : void //UC10 //action: create new waste journey
++generateTrackingCode() : String //UC10 //action: generate unique tracking code
++addStage(stage: Stage) : void //UC10 //action: add stage to journey
++updateLocation(location: Address) : void //UC10 //action: update current waste location
++completeJourney() : void //UC10 //action: mark journey as completed
++cancelJourney() : void //UC10 //action: cancel journey
++validateTrackingCode(code: String) : ValidationResult //UC10 //action: validate tracking code format
+}
+WasteJourney ..> ValidationResult
+}
+' ──────────────────────────────────────────────
+'  PRODUCT MANAGEMENT
+' ──────────────────────────────────────────────
+package "Product Management" {
+enum ProductCategory {
+RECYCLABLE_PLASTIC
+ELECTRONIC_WASTE
+ORGANIC_MATERIAL
+METAL
+GLASS
+TEXTILES
+PAPER
+}
+enum ListingStatus {
+DRAFT
+PENDING_APPROVAL
+PUBLISHED
+REJECTED
+ARCHIVED
+}
+class Product {
+productId           : UUID
+name                : String
+description         : String
+category            : ProductCategory
+inventory           : Integer
+listingStatus       : ListingStatus
+listedDate          : Date
+lastUpdatedDate     : Date
+sustainabilityScore : Float
++createListing(name: String, description: String, category: ProductCategory, inventory: Integer) : ValidationResult //UC5 //action: create new product listing
++validateProduct() : ValidationResult //UC5 //action: validate product details
++updateListing(name: String, description: String, category: ProductCategory, inventory: Integer) : ValidationResult //UC13 //action: update product listing
++publishListing() : void //UC5 //action: publish draft listing
++archiveListing() : void //UC13 //action: archive product listing
++calculateSustainabilityScore() : Float //UC5 //action: calculate product sustainability score
++updateLastModified() : void //UC13 //action: update last modified timestamp
+}
+class SearchFilter {
+categories  : ProductCategory[]
+location    : Address
+maxDistance : Float
+keywords    : String
++addCategory(category: ProductCategory) : void //UC14 //action: add category to filter
++setLocation(location: Address, maxDistance: Float) : void //UC14 //action: set location search parameters
++setKeywords(keywords: String) : void //UC14 //action: set search keywords
++applyFilter(products: Product[]) : Product[] //UC14 //action: apply filter to product list
++validateFilter() : ValidationResult //UC14 //action: validate filter parameters
+}
+Product ..> ValidationResult
+SearchFilter ..> ValidationResult
+Product "1" --> "*" CollectionPoint : available at >
+Product "1" --> "1" UserProfile      : requester >
+SearchFilter --> "*" Product            : filters >
+}
+' ──────────────────────────────────────────────
+'  LOCATION MANAGEMENT
+' ──────────────────────────────────────────────
+package "Location Management" {
+enum PointType {
+COLLECTION_CENTER
+RECYCLING_PLANT
+REUSE_STORE
+}
+class CollectionPoint {
+pointId        : UUID
+name           : String
+type           : PointType
+position       : Coordinates
+operatingHours : OpeningHours[]
++createPoint(name: String, type: PointType, position: Coordinates) : ValidationResult //UC20 //action: create collection point
++validatePoint() : ValidationResult //UC20 //action: validate collection point data
++addOperatingHours(hours: OpeningHours) : void //UC20 //action: add operating hours
++removeOperatingHours(hours: OpeningHours) : void //UC20 //action: remove operating hours
++isOpenAt(day: DayOfWeek, time: LocalTime) : Boolean //UC22 //action: check if point is open at specific time
++findNearbyPoints(position: Coordinates, maxDistance: Float) : CollectionPoint[] //UC22 //action: find nearby collection points
+}
+CollectionPoint ..> ValidationResult
+CollectionPoint *-- Coordinates
+CollectionPoint *-- OpeningHours
+CollectionPoint -- Address : located at >
+ServiceProvider "1" --> "*" CollectionPoint : operates at >
+}
+' ──────────────────────────────────────────────
+'  NOTIFICATION SERVICES
+' ──────────────────────────────────────────────
+package "Notification Services" {
+enum NotificationType {
+REGISTRATION_SUCCESS
+NEW_REQUEST
+DISPATCH_ALERT
+PASSWORD_RESET
+PASSWORD_RESET_CONFIRM
+REQUEST_ACCEPTED
+ACCOUNT_DEACTIVATION
+}
+enum NotificationChannel{
+EMAIL
+SMS
+PUSH
+}
+class NotificationTemplate {
+templateId : String
+channel    : NotificationChannel
+content    : String
++getTemplate(type: NotificationType, channel: NotificationChannel) : String //UC1 //action: get notification template
++formatTemplate(template: String, params: Map) : String //UC1 //action: format template with parameters
+}
+class NotificationService {
++sendNotification(recipient: UserProfile, type: NotificationType, channel: NotificationChannel, params: Map) : void //UC1 //action: send notification to user
++notifyServiceProvider(provider: ServiceProvider, type: NotificationType, params: Map) : void //UC6 //action: notify service provider
++sendVerificationEmail(user: UserProfile) : void //UC1 //action: send email verification
++sendPasswordResetEmail(user: UserProfile, token: String) : void //UC3 //action: send password reset email
++notifyAccountDeactivation(user: UserProfile) : void //UC15 //action: notify about account deactivation
+}
+NotificationService ..> NotificationTemplate
+NotificationService --> UserProfile     : notifies >
+NotificationService --> ServiceProvider : alerts >
+}
+@enduml

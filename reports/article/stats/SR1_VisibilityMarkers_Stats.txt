@@ -1,0 +1,17 @@
+--- SR1: Visibility Markers ---
+
+Visibility Proportions (%):
+                                   +     -     #  None
+Model                                                 
+ChatGPT-4o                    100.00  0.00  0.00   0.0
+ChatGPT-o3                    100.00  0.00  0.00   0.0
+Claude3.7                     100.00  0.00  0.00   0.0
+DeepSeek(R1)                   99.37  0.00  0.00   0.0
+Gemini-2.5-Pro-Preview-05-06   98.32  0.42  1.26   0.0
+Grok3                          99.66  0.34  0.00   0.0
+Llama4                        100.00  0.00  0.00   0.0
+Mistral                       100.00  0.00  0.00   0.0
+Qwen3                          99.73  0.27  0.00   0.0
+
+Chi-squared Test (Visibility Categories): Chi2=64.087, p=0.0000, df=24
+Cramér's V (Visibility Categories): 0.080
