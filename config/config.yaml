@@ -1,0 +1,46 @@
+# Paths (relative to project root 'Results/')
+paths:
+  puml_dir: "puml/"               # Input diagrams
+  baseline_file: "puml/methodless.puml"
+  reports_dir: "reports/"         # Output directory
+
+# Experiment Parameters
+experiment:
+  class_names:                    # Target classes for analysis
+    - ValidationResult
+    - Coordinates
+    - Address
+    - TimeRange
+    - OpeningHours
+    - UserAccount
+    - UserProfile
+    - UserCredentials
+    - RoleManager
+    - ServiceRequest
+    - CollectionRequest
+    - TransportRequest
+    - ServiceRequestDetails
+    - RoutePlan
+    - WasteJourney
+    - Product
+    - SearchFilter
+    - CollectionPoint
+    - NotificationTemplate
+    - NotificationService
+  top_n_core_methods: 20          # For core method analysis
+  bootstrap_samples: 1000         # For statistical confidence intervals
+  random_seed: 42                 # Reproducibility
+
+# Regex Patterns (PlantUML parsing)
+regex_patterns:
+  class_block: 'class\s+("?[\w]+"?)\s*\{([\s\S]*?)\}'
+  method_detail: '^[ \t]*([+#~-])?\s*([\w]+)\s*\((.*?)\)(?:\s*:\s*([^\{\s]+))?(?:\s*//UC(\d+(?:,\d+)*)\s+action:(.+))?.*$'
+
+baseline:
+  relationships: 7
+  classes: 20
+  enum_values: 62
+  enums: 14
+  packages: 7
+  attributes: 69
+

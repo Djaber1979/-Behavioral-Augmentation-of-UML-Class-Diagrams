@@ -1,0 +1,76 @@
+@startuml
+left to right direction
+
+' Original diagram preserved
+' ————————————————————
+' Updates with domain-layer methods per UC analysis below
+
+package "User Management" {
+  class UserAccount {
+    +register(email: String, password: String, profile: UserProfile) : ValidationResult //UC1
+    +activateAccount() : void //UC1
+    +deactivate(reason: String) : void //UC15
+    +lockAccount() : void //UC2
+    +recordLogin() : void //UC2
+    +logout() : void //UC16
+  }
+
+  class UserProfile {
+    +updateProfile(name: String, phone: String, address: Address) : ValidationResult //UC4
+    +markEmailVerified(date: Date) : void //UC1
+  }
+
+  class UserCredentials {
+    +validateCredentials(inputPassword: String) : Boolean //UC2
+    +incrementFailedLogin() : void //UC2
+    +resetFailedLoginAttempts() : void //UC2
+    +resetPassword(newPassword: String) : void //UC3
+    +setResetToken(token: String, expiry: Date) : void //UC3
+    +isResetTokenValid(token: String) : Boolean //UC3
+  }
+
+  class RoleManager {
+    +assignRole(profile: UserProfile, newRole: UserRole) : ValidationResult //UC21
+  }
+}
+
+package "Product Management" {
+  class Product {
+    +createListing(name: String, description: String, category: ProductCategory, inventory: Integer) : ValidationResult //UC5
+    +updateListing(name: String, description: String, category: ProductCategory, inventory: Integer) : ValidationResult //UC13
+  }
+
+  class SearchFilter {
+    +filter(products: Product[]) : Product[] //UC14
+  }
+}
+
+package "Service Management" {
+  class ServiceRequest {
+    +cancel(by: UserProfile, cancelDate: Date) : void //UC12
+    +isCancellable() : Boolean //UC12
+  }
+
+  class CollectionRequest {
+    +scheduleCollection(by: ServiceProvider, timeslot: TimeRange) : void //UC8
+    +markCollected() : void //UC8
+  }
+
+  class TransportRequest {
+    +scheduleTransport(by: ServiceProvider, timeslot: TimeRange, route: RoutePlan) : void //UC9
+    +markCompleted() : void //UC9
+  }
+}
+
+package "Waste Tracking" {
+  class WasteJourney {
+    +track(trackingCode: String) : WasteJourney //UC10
+  }
+}
+
+package "Location Management" {
+  class CollectionPoint {
+    +updateDetails(name: String, type: PointType, position: Coordinates, hours: OpeningHours[]) : ValidationResult //UC20
+  }
+}
+@enduml
