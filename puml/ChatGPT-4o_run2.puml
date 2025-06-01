@@ -1,0 +1,76 @@
+@startuml
+left to right direction
+
+package "User Management" {
+  class UserAccount {
+    +registerAccount(email: String, password: String, profile: UserProfile) : ValidationResult //UC1
+    +verifyEmail() : void //UC1
+    +deactivate(reason: String) : void //UC15
+    +lockAccount() : void //UC2
+    +unlockAccount() : void //UC2
+    +recordLogin(date: Date) : void //UC2
+    +isEligibleToLogin() : Boolean //UC2
+    +logout() : void //UC16
+  }
+
+  class UserCredentials {
+    +validatePassword(inputPassword: String) : Boolean //UC2
+    +incrementFailedAttempts() : void //UC2
+    +resetFailedAttempts() : void //UC2
+    +resetPassword(newPassword: String) : ValidationResult //UC3
+    +generateResetToken(expiration: Date) : String //UC3
+    +isResetTokenValid(token: String) : Boolean //UC3
+  }
+
+  class UserProfile {
+    +updateProfile(name: String, phone: String, address: Address) : ValidationResult //UC4
+    +markEmailVerified(date: Date) : void //UC1
+  }
+
+  class RoleManager {
+    +assignRole(user: UserProfile, role: UserRole) : ValidationResult //UC21
+  }
+}
+
+package "Product Management" {
+  class Product {
+    +publishListing() : ValidationResult //UC5
+    +updateListing(name: String, desc: String, category: ProductCategory, inventory: Integer) : ValidationResult //UC13
+  }
+
+  class SearchFilter {
+    +apply() : Product[] //UC14
+  }
+}
+
+package "Service Management" {
+  class ServiceRequest {
+    +cancelRequest(by: UserProfile, date: Date) : void //UC12
+  }
+
+  class CollectionRequest {
+    +schedule(vehicle: VehicleType, time: TimeRange, location: Address) : void //UC6
+    +acceptRequest(provider: ServiceProvider, slot: TimeRange) : void //UC8
+    +markAsCollected() : void //UC8
+  }
+
+  class TransportRequest {
+    +scheduleTransport(route: RoutePlan, slot: TimeRange) : void //UC6
+    +acceptRequest(provider: ServiceProvider, slot: TimeRange) : void //UC9
+    +markAsCompleted() : void //UC9
+  }
+}
+
+package "Waste Tracking" {
+  class WasteJourney {
+    +updateStage(stage: Stage) : void //UC10
+    +updateLocation(address: Address) : void //UC10
+  }
+}
+
+package "Location Management" {
+  class CollectionPoint {
+    +updateDetails(name: String, type: PointType, coordinates: Coordinates, hours: OpeningHours[]) : ValidationResult //UC20
+  }
+}
+@enduml

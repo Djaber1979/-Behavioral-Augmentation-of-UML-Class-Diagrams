@@ -1,0 +1,162 @@
+@startuml
+class User {
+
+* id: UUID
+* name: String
+* email: String
+* passwordHash: String
+* address: String
+* phoneNumber: String
+* emailVerified: Boolean
+* accountStatus: AccountStatus
+* role: UserRole
+* lastLogin: DateTime
+* lastProfileUpdate: DateTime
+* deactivationReason: String
+  \--
+  +register(name: String, email: String, password: String, address: String, phoneNumber: String): void //UC1 //action: create unverified user account
+  +verifyEmail(token: String): void //UC1 //action: verify email and activate account
+  +login(email: String, password: String): void //UC2 //action: authenticate user and record login timestamp
+  +requestPasswordReset(): void //UC3 //action: initiate password reset process
+  +resetPassword(token: String, newPassword: String): void //UC3 //action: reset password using token
+  +updateProfile(name: String, address: String, phoneNumber: String): void //UC4 //action: update user profile information
+  +deactivateAccount(reason: String): void //UC15 //action: deactivate user account
+  +logout(): void //UC16 //action: terminate user session
+  }
+
+enum AccountStatus {
+ACTIVE
+UNVERIFIED
+DEACTIVATED
+LOCKED
+}
+
+enum UserRole {
+USER
+SERVICE\_PROVIDER
+PLATFORM\_MANAGER
+}
+
+class Product {
+
+* id: UUID
+* owner: User
+* name: String
+* category: String
+* inventory: int
+* description: String
+* status: ProductStatus
+  \--
+  +listProduct(name: String, category: String, inventory: int, description: String): void //UC5 //action: create new product listing
+  +updateProduct(name: String, category: String, inventory: int, description: String): void //UC13 //action: update existing product listing
+  }
+
+enum ProductStatus {
+LISTED
+UNLISTED
+}
+
+class ServiceRequest {
+
+* id: UUID
+* requester: User
+* serviceType: ServiceType
+* details: String
+* status: RequestStatus
+* assignedProvider: ServiceProvider
+* scheduledDate: DateTime
+  \--
+  +createRequest(serviceType: ServiceType, details: String): void //UC6 //action: create new service request
+  +cancelRequest(): void //UC12 //action: cancel pending service request
+  +viewStatus(): RequestStatus //UC11 //action: view current status of service request
+  }
+
+enum ServiceType {
+COLLECTION
+TRANSPORT
+}
+
+enum RequestStatus {
+PENDING
+ACCEPTED
+SCHEDULED
+COMPLETED
+CANCELLED
+}
+
+class ServiceProvider {
+
+* id: UUID
+* user: User
+* companyName: String
+* serviceAreas: List<String>
+* vehicleTypes: List<String>
+* availabilitySchedule: Schedule
+  \--
+  +acceptRequest(request: ServiceRequest, scheduledDate: DateTime): void //UC8 //action: accept and schedule service request
+  +completeRequest(request: ServiceRequest): void //UC8 //action: mark service request as completed
+  +updateProfile(companyName: String, serviceAreas: List<String>, vehicleTypes: List<String>, availabilitySchedule: Schedule): void //UC19 //action: update service provider profile
+  }
+
+class PlatformManager {
+
+* id: UUID
+* user: User
+  \--
+  +manageServices(): void //UC17 //action: oversee and manage platform services
+  +manageServiceProviders(): void //UC18 //action: oversee and manage service provider profiles
+  +manageCollectionPoints(): void //UC20 //action: add, update, or deactivate collection/recycling locations
+  +assignUserRole(user: User, role: UserRole): void //UC21 //action: assign or update user roles
+  }
+
+class CollectionPoint {
+
+* id: UUID
+* name: String
+* facilityType: String
+* address: String
+* operatingHours: String
+* status: LocationStatus
+  \--
+  +createLocation(name: String, facilityType: String, address: String, operatingHours: String): void //UC20 //action: create new collection/recycling location
+  +updateLocation(name: String, facilityType: String, address: String, operatingHours: String): void //UC20 //action: update existing location details
+  +deactivateLocation(): void //UC20 //action: deactivate collection/recycling location
+  }
+
+enum LocationStatus {
+ACTIVE
+INACTIVE
+}
+
+class WasteTracking {
+
+* trackingCode: String
+* currentStatus: String
+* currentLocation: String
+  \--
+  +trackWaste(trackingCode: String): String //UC10 //action: retrieve current status and location of waste
+  }
+
+## class Search {
+
++searchProducts(criteria: SearchCriteria): List<Product> //UC14 //action: search and filter recyclable waste products
+}
+
+class SearchCriteria {
+
+* keywords: String
+* category: String
+* location: String
+  \--
+  }
+
+User --> Product : owns
+User --> ServiceRequest : submits
+ServiceRequest --> ServiceProvider : assigned to
+ServiceProvider --> ServiceRequest : manages
+PlatformManager --> ServiceProvider : oversees
+PlatformManager --> CollectionPoint : manages
+User --> WasteTracking : tracks
+User --> Search : uses
+
+@enduml

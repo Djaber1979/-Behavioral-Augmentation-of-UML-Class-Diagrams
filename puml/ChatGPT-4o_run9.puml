@@ -1,0 +1,90 @@
+@startuml
+' Additions only – method declarations with comments mapping to use cases/actions
+
+' ──────────────────────────────────────────────
+'  USER MANAGEMENT – USERACCOUNT
+' ──────────────────────────────────────────────
+class UserAccount {
+  +registerNewAccount(info: UserProfile, credentials: UserCredentials): ValidationResult //UC1
+  +activateAccount(): void //UC1
+  +deactivate(reason: String): void //UC15
+  +lockAccount(): void //UC2
+  +unlockAccount(): void //supporting logic
+  +recordLoginTimestamp(): void //UC2
+}
+
+class UserProfile {
+  +verifyEmail(): void //UC1
+  +updateProfile(info: UserProfile): ValidationResult //UC4
+}
+
+class UserCredentials {
+  +validateCredentials(email: String, password: String): ValidationResult //UC2
+  +initiatePasswordReset(): void //UC3
+  +resetPassword(token: String, newPassword: String): ValidationResult //UC3
+  +incrementFailedLoginAttempts(): void //UC2
+  +resetFailedAttempts(): void //UC2
+}
+
+class "RoleManager <<service>>" as RoleManager {
+  +assignRole(user: UserAccount, role: UserRole): ValidationResult //UC21
+}
+
+' ──────────────────────────────────────────────
+'  SERVICE MANAGEMENT
+' ──────────────────────────────────────────────
+abstract class ServiceRequest {
+  +submitRequest(): ValidationResult //UC6
+  +cancelRequest(by: UserProfile): void //UC12
+  +viewStatus(): RequestStatus //UC11
+}
+
+class CollectionRequest {
+  +acceptCollection(provider: ServiceProvider, scheduled: TimeRange): void //UC8
+  +markAsCollected(): void //UC8
+}
+
+class TransportRequest {
+  +acceptTransport(provider: ServiceProvider, scheduled: TimeRange, routePlan: RoutePlan): void //UC9
+  +markAsCompleted(): void //UC9
+}
+
+' ──────────────────────────────────────────────
+'  WASTE TRACKING
+' ──────────────────────────────────────────────
+class WasteJourney {
+  +trackStatus(code: String): TrackingStatus //UC10
+  +updateCurrentLocation(location: Address): void //supporting UC10
+}
+
+' ──────────────────────────────────────────────
+'  PRODUCT MANAGEMENT
+' ──────────────────────────────────────────────
+class Product {
+  +publishListing(): ValidationResult //UC5
+  +updateListing(updated: Product): ValidationResult //UC13
+}
+
+class SearchFilter {
+  +apply(): Product[] //UC14
+}
+
+' ──────────────────────────────────────────────
+'  LOCATION MANAGEMENT
+' ──────────────────────────────────────────────
+class CollectionPoint {
+  +updateLocationDetails(info: CollectionPoint): ValidationResult //UC20
+}
+
+' ──────────────────────────────────────────────
+'  NOTIFICATION SERVICES
+' ──────────────────────────────────────────────
+class NotificationService {
+  +sendRegistrationConfirmation(user: UserProfile): void //UC1
+  +sendVerificationEmail(user: UserProfile): void //UC1
+  +sendPasswordResetLink(user: UserProfile): void //UC3
+  +notifyAccountDeactivation(user: UserProfile): void //UC15
+  +notifyRequestAccepted(user: UserProfile): void //UC8 //UC9
+}
+
+@enduml

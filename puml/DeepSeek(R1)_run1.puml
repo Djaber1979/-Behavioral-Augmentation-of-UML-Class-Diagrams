@@ -1,0 +1,150 @@
+@startuml
+left to right direction
+' ──────────────────────────────────────────────
+'  CORE VALUE OBJECTS (methods added)
+' ──────────────────────────────────────────────
+package "Core Value Objects" {
+enum VerificationStatus { VERIFIED, UNVERIFIED }
+enum VehicleType { TRUCK, VAN, CARGO_BIKE, BICYCLE, MOTORCYCLE, COMPACTOR, ELECTRIC_VAN, CARGO_VAN }
+enum DayOfWeek { MON, TUE, WED, THU, FRI, SAT, SUN }
+
+class ValidationResult {
+  +validateEmailFormat(email: String): ValidationResult  //UC1,UC4,UC15,UC19,UC20
+  +validatePasswordStrength(password: String): ValidationResult  //UC1,UC3
+  +validateAddressConsistency(address: Address): ValidationResult  //UC4,UC20
+}
+
+class Coordinates {
+  +calculateDistance(target: Coordinates): Float  //UC14,UC22
+}
+
+class Address {
+  +verifyAddress(): void  //UC1,UC19
+}
+
+class TimeRange {
+  +overlapsWith(other: TimeRange): Boolean  //UC8,UC9,UC20
+}
+
+class OpeningHours {
+  +coversTimestamp(time: LocalTime): Boolean  //UC20,UC22
+}
+}
+
+' ──────────────────────────────────────────────
+'  USER MANAGEMENT (methods added)
+' ──────────────────────────────────────────────
+package "User Management" {
+enum UserRole { USER, SERVICE_PROVIDER, PLATFORM_MANAGER }
+enum AccountStatus { ACTIVE, DEACTIVATED, SUSPENDED, LOCKED }
+
+class UserAccount {
+  +createUnverifiedAccount(): void  //UC1
+  +activateAccount(): void  //UC1
+  +deactivateAccount(reason: String): void  //UC15
+  +lockAccount(): void  //UC2
+  +unlockAccount(): void  //UC2,UC3
+}
+
+class UserProfile {
+  +markEmailVerified(): void  //UC1
+  +updateContactInfo(phone: String, email: String): ValidationResult  //UC4
+  +recordLastUpdate(): void  //UC4,UC13,UC19
+}
+
+class UserCredentials {
+  +validateCredentials(email: String, password: String): Boolean  //UC2
+  +initiatePasswordReset(): void  //UC3
+  +completePasswordReset(newPassword: String): void  //UC3
+  +incrementFailedAttempts(): void  //UC2
+  +resetLoginAttempts(): void  //UC2
+}
+
+class ServiceProvider {
+  +acceptCollectionRequest(request: CollectionRequest): void  //UC8
+  +acceptTransportRequest(request: TransportRequest): void  //UC9
+  +updateServiceAreas(areas: Address[]): ValidationResult  //UC19
+}
+
+class RoleManager {
+  +promoteToServiceProvider(user: UserAccount): ValidationResult  //UC21
+  +demoteFromServiceProvider(user: UserAccount): void  //UC18
+}
+}
+
+' ──────────────────────────────────────────────
+'  SERVICE MANAGEMENT (methods added)
+' ──────────────────────────────────────────────
+package "Service Management" {
+enum RequestType { COLLECTION, TRANSPORT }
+enum RequestStatus { PENDING, SCHEDULED, COMPLETED, CANCELLED }
+
+abstract class ServiceRequest {
+  {abstract} +validateRequest(): ValidationResult  //UC6,UC7
+  +scheduleService(time: TimeRange): void  //UC8,UC9
+  +cancelRequest(by: UserProfile): void  //UC12
+  +markCompleted(): void  //UC8,UC9
+}
+
+class CollectionRequest {
+  +validateVehicleCapacity(vehicle: VehicleType): Boolean  //UC8
+}
+
+class TransportRequest {
+  +calculateOptimalRoute(): RoutePlan  //UC9
+}
+
+class RoutePlan {
+  +estimateTravelTime(): Duration  //UC9
+}
+}
+
+' ──────────────────────────────────────────────
+'  WASTE TRACKING (methods added)
+' ──────────────────────────────────────────────
+package "Waste Tracking" {
+class WasteJourney {
+  +updateTrackingStatus(status: TrackingStatus): void  //UC10
+  +recordStageTransition(stage: Stage): void  //UC10
+  +getCurrentStatus(): TrackingStatus  //UC10,UC11
+}
+}
+
+' ──────────────────────────────────────────────
+'  PRODUCT MANAGEMENT (methods added)
+' ──────────────────────────────────────────────
+package "Product Management" {
+class Product {
+  +publishListing(): void  //UC5
+  +updateListingDetails(): ValidationResult  //UC13
+  +archiveListing(): void  //UC13,UC15
+}
+
+class SearchFilter {
+  +applyCategoryFilter(categories: ProductCategory[]): void  //UC14
+  +applyLocationFilter(origin: Coordinates, radius: Float): void  //UC14,UC22
+}
+}
+
+' ──────────────────────────────────────────────
+'  LOCATION MANAGEMENT (methods added)
+' ──────────────────────────────────────────────
+package "Location Management" {
+class CollectionPoint {
+  +validateOperatingHours(): ValidationResult  //UC20
+  +updateFacilityType(type: PointType): void  //UC20
+  +getAvailableTimeSlots(date: LocalDate): TimeRange[]  //UC6,UC8
+}
+}
+
+' ──────────────────────────────────────────────
+'  NOTIFICATION SERVICES (methods added)
+' ──────────────────────────────────────────────
+package "Notification Services" {
+class NotificationService {
+  +sendVerificationEmail(profile: UserProfile): void  //UC1
+  +sendPasswordResetInstructions(credentials: UserCredentials): void  //UC3
+  +notifyRequestStatusChange(request: ServiceRequest): void  //UC8,UC9,UC12
+}
+}
+@enduml

@@ -1,0 +1,87 @@
+@startuml
+left to right direction
+
+' CORE VALUE OBJECTS
+' No domain methods needed per SRP and UC analysis
+
+' USER MANAGEMENT
+package "User Management" {
+class UserAccount {
+  +registerAccount(email: String, password: String): ValidationResult //UC1
+  +activateAccount(): void //UC1
+  +deactivateAccount(reason: String): void //UC15
+  +lockAccount(): void //UC2
+  +recordLogin(): void //UC2
+}
+
+class UserCredentials {
+  +validatePassword(password: String): Boolean //UC2
+  +resetPassword(token: String, newPassword: String): ValidationResult //UC3
+  +generatePasswordResetToken(): void //UC3
+}
+
+class UserProfile {
+  +updateProfileInfo(name: String, phone: String, address: Address): ValidationResult //UC4
+  +verifyEmail(): void //UC1
+}
+
+class RoleManager {
+  +assignRole(profile: UserProfile, role: UserRole): ValidationResult //UC21
+}
+}
+
+' SERVICE MANAGEMENT
+package "Service Management" {
+abstract class ServiceRequest {
+  +cancelRequest(by: UserProfile): void //UC12
+  +assignProvider(provider: ServiceProvider): void //UC8, UC9
+  +updateStatus(newStatus: RequestStatus): void //UC8, UC9
+}
+
+class CollectionRequest {
+  +createCollectionRequest(location: Address, vehicleType: VehicleType, categories: ProductCategory[], quantity: Integer, requester: UserProfile): ValidationResult //UC6
+}
+
+class TransportRequest {
+  +createTransportRequest(route: RoutePlan, categories: ProductCategory[], quantity: Integer, requester: UserProfile): ValidationResult //UC6
+  +scheduleTransport(dateTime: TimeRange, plan: RoutePlan): void //UC9
+}
+}
+
+' WASTE TRACKING
+package "Waste Tracking" {
+class WasteJourney {
+  +trackProgress(): Stage[] //UC10
+  +getCurrentStatus(): TrackingStatus //UC10
+}
+}
+
+' PRODUCT MANAGEMENT
+package "Product Management" {
+class Product {
+  +createListing(name: String, category: ProductCategory, description: String, inventory: Integer): ValidationResult //UC5
+  +updateListing(name: String, description: String, inventory: Integer): ValidationResult //UC13
+}
+
+class SearchFilter {
+  +applyFilters(): Product[] //UC14
+}
+}
+
+' LOCATION MANAGEMENT
+package "Location Management" {
+class CollectionPoint {
+  +updateDetails(name: String, type: PointType, hours: OpeningHours[]): ValidationResult //UC20
+}
+}
+
+' NOTIFICATION SERVICES
+package "Notification Services" {
+class NotificationService {
+  +sendRegistrationConfirmation(user: UserProfile): void //UC1
+  +sendPasswordResetEmail(user: UserProfile): void //UC3
+  +sendAccountDeactivationNotice(user: UserProfile): void //UC15
+  +notifyRequestAccepted(user: UserProfile): void //UC8, UC9
+}
+}
+@enduml

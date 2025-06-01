@@ -1,0 +1,195 @@
+@startuml
+left to right direction
+
+' Core Value Objects
+package "Core Value Objects" {
+    enum VerificationStatus { VERIFIED, UNVERIFIED }
+    enum VehicleType { TRUCK, VAN, CARGO_BIKE }
+    enum DayOfWeek { MON, TUE, WED, THU, FRI, SAT, SUN }
+    class ValidationResult { valid: Boolean, messages: String[] }
+    class Coordinates { latitude: Float, longitude: Float }
+    class Address { street: String, city: String, zipCode: String, country: String, position: Coordinates }
+    class TimeRange { start: LocalTime, end: LocalTime }
+    class OpeningHours { dayOfWeek: DayOfWeek, timeRange: TimeRange }
+    Address *-- Coordinates
+    OpeningHours -- TimeRange
+}
+
+' User Management
+package "User Management" {
+    enum UserRole { USER, SERVICE_PROVIDER, PLATFORM_MANAGER }
+    enum AccountStatus { ACTIVE, DEACTIVATED, SUSPENDED }
+    class UserAccount {
+        id: UUID
+        registrationDate: Date
+        accountStatus: AccountStatus
+        +createAccount(profile: UserProfile, credentials: UserCredentials): UserAccount
+        +verifyEmail(token: String): ValidationResult
+        +activateAccount()
+        +recordLoginTimestamp()
+        +deactivateAccount()
+        +logout()
+    }
+    class UserProfile {
+        name: String
+        email: String
+        phoneNumber: String
+        address: Address
+        role: UserRole
+        lastUpdatedDate: Date
+        +validateProfileData(data: Map<String, String>): ValidationResult
+        +updateProfile(data: Map<String, String>)
+        +recordModificationTimestamp()
+        +searchProfile(userId: UUID): UserProfile
+        +updateRole(role: UserRole)
+    }
+    class UserCredentials {
+        encryptedPassword: String
+        lastLoginDate: Date
+        +validateEmailFormat(email: String): ValidationResult
+        +validatePasswordStrength(password: String): ValidationResult
+        +validateCredentials(email: String, password: String): ValidationResult
+        +sendPasswordResetLink(email: String)
+        +validateResetLink(token: String): ValidationResult
+        +updatePassword(newPassword: String): ValidationResult
+    }
+    class ServiceProvider {
+        providerId: UUID
+        companyName: String
+        profile: UserProfile
+        +scheduleRequest(request: ServiceRequest)
+        +listCompanies(): List<ServiceProvider>
+        +listPendingRequests(): List<CollectionRequest>
+        +checkAvailability(date: Date, time: TimeRange): Boolean
+        +acceptRequest(request: CollectionRequest)
+        +dispatchTeam(request: CollectionRequest)
+        +listPendingTransportRequests(): List<TransportRequest>
+        +checkVehicleAvailability(request: TransportRequest): Boolean
+        +acceptTransportRequest(request: TransportRequest)
+        +scheduleTransport(request: TransportRequest, date: Date, time: TimeRange)
+        +performTransport(request: TransportRequest)
+        +reviewProfiles(): List<ServiceProvider>
+        +approveProvider(provider: ServiceProvider)
+        +updateProfile(provider: ServiceProvider, data: Map<String, String>)
+        +deactivateProvider(provider: ServiceProvider)
+        +updateFields(data: Map<String, String>)
+        +validateUpdates(): ValidationResult
+        +saveUpdates()
+        +addressIssues(issues: List<String>)
+    }
+    class "RoleManager <<service>>" as RoleManager {
+        +grantAccess(role: UserRole)
+        +selectNewRole(role: UserRole)
+        +validateRoleTransition(currentRole: UserRole, newRole: UserRole): ValidationResult
+    }
+    UserAccount "1" --> "1" UserProfile
+    UserAccount "1" --> "1" UserCredentials
+    UserAccount --> RoleManager
+    UserAccount "1" -- "0..1" ServiceProvider
+}
+
+' Service Management
+package "Service Management" {
+    enum RequestType { COLLECTION, TRANSPORT }
+    enum RequestStatus { PENDING, SCHEDULED, COMPLETED, CANCELLED }
+    abstract class ServiceRequest {
+        id: UUID
+        requestType: RequestType
+        status: RequestStatus
+        createdDate: Date
+        +createRequest(requestType: RequestType, details: Map<String, String>)
+        +bookService(provider: ServiceProvider)
+        +listRequests(user: UserProfile): List<ServiceRequest>
+        +viewDetails()
+        +cancelRequest()
+        +reviewListings(): List<ServiceRequest>
+        +updateListings(listings: List<ServiceRequest>)
+    }
+    class CollectionRequest extends ServiceRequest {
+        vehicleType: VehicleType
+        location: Address
+        +viewDetails()
+        +updateStatus(status: RequestStatus)
+    }
+    class TransportRequest extends ServiceRequest {
+        routePlan: RoutePlan
+        +viewDetails()
+        +updateStatus(status: RequestStatus)
+    }
+    class RoutePlan { waypoints: Coordinates[] }
+    ServiceProvider "1" --> "*" ServiceRequest
+    TransportRequest -- RoutePlan
+}
+
+' Waste Tracking
+package "Waste Tracking" {
+    enum TrackingStatus { IN_PROGRESS, COMPLETED }
+    class WasteJourney {
+        journeyId: UUID
+        trackingCode: String
+        status: TrackingStatus
+        +getJourneyByTrackingCode(trackingCode: String): WasteJourney
+        +displayStatus()
+    }
+    ServiceRequest --> WasteJourney
+}
+
+' Product Management
+package "Product Management" {
+    enum ProductCategory { RECYCLABLE_PLASTIC, ELECTRONIC_WASTE }
+    enum ListingStatus { DRAFT, PUBLISHED }
+    class Product {
+        productId: UUID
+        name: String
+        category: ProductCategory
+        listingStatus: ListingStatus
+        +validateProductDetails(details: Map<String, String>): ValidationResult
+        +publishListing()
+        +listListings(user: UserProfile): List<Product>
+        +updateDetails(details: Map<String, String>)
+        +validateAndUpdate()
+        +searchProducts(filter: SearchFilter): List<Product>
+        +displayDetails()
+    }
+    class SearchFilter {
+        categories: ProductCategory[]
+        keywords: String
+        +setCriteria(criteria: Map<String, String>)
+    }
+    Product "1" --> "1" UserProfile
+    SearchFilter --> "*" Product
+}
+
+' Location Management
+package "Location Management" {
+    enum PointType { COLLECTION_CENTER, RECYCLING_PLANT }
+    class CollectionPoint {
+        pointId: UUID
+        name: String
+        type: PointType
+        position: Coordinates
+        +createOrEditLocation(data: Map<String, String>)
+        +validateLocationDetails(): ValidationResult
+        +saveLocation()
+        +listPoints(): List<CollectionPoint>
+        +searchPoints(criteria: Map<String, String>): List<CollectionPoint>
+        +viewDetails()
+    }
+    CollectionPoint *-- Coordinates
+}
+
+' Notification Services
+package "Notification Services" {
+    class NotificationService {
+        +sendVerificationEmail(email: String, verificationLink: String)
+        +sendRegistrationConfirmation(email: String)
+        +sendPasswordResetConfirmation(email: String)
+        +notifyUser(request: ServiceRequest, message: String)
+        +sendDeactivationConfirmation(email: String)
+        +notifyProvider(provider: ServiceProvider, message: String)
+    }
+    NotificationService --> UserProfile
+    NotificationService --> ServiceProvider
+}
+
+@enduml
