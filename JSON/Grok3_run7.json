@@ -1,0 +1,1838 @@
+{
+  "packages": [
+    "Core",
+    "Location",
+    "Notification",
+    "Product",
+    "Service",
+    "User",
+    "Waste"
+  ],
+  "enums": [
+    {
+      "name": "AccountStatus",
+      "values": [
+        "ACTIVE, DEACTIVATED, SUSPENDED"
+      ]
+    },
+    {
+      "name": "DayOfWeek",
+      "values": [
+        "MON, TUE, WED, THU, FRI, SAT, SUN"
+      ]
+    },
+    {
+      "name": "ListingStatus",
+      "values": [
+        "DRAFT, PUBLISHED"
+      ]
+    },
+    {
+      "name": "PointType",
+      "values": [
+        "COLLECTION_CENTER, RECYCLING_PLANT"
+      ]
+    },
+    {
+      "name": "ProductCategory",
+      "values": [
+        "RECYCLABLE_PLASTIC, ELECTRONIC_WASTE"
+      ]
+    },
+    {
+      "name": "RequestStatus",
+      "values": [
+        "PENDING, SCHEDULED, COMPLETED, CANCELLED"
+      ]
+    },
+    {
+      "name": "RequestType",
+      "values": [
+        "COLLECTION, TRANSPORT"
+      ]
+    },
+    {
+      "name": "TrackingStatus",
+      "values": [
+        "IN_PROGRESS, COMPLETED"
+      ]
+    },
+    {
+      "name": "UserRole",
+      "values": [
+        "USER, SERVICE_PROVIDER, PLATFORM_MANAGER"
+      ]
+    },
+    {
+      "name": "VehicleType",
+      "values": [
+        "TRUCK, VAN, CARGO_BIKE"
+      ]
+    },
+    {
+      "name": "VerificationStatus",
+      "values": [
+        "VERIFIED, UNVERIFIED"
+      ]
+    }
+  ],
+  "classes": [
+    {
+      "name": "Address",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "name": "CollectionPoint",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [
+        {
+          "signature": "name : String",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "name",
+          "type": "String",
+          "default_value": null
+        },
+        {
+          "signature": "pointId : UUID",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "pointId",
+          "type": "UUID",
+          "default_value": null
+        },
+        {
+          "signature": "position : Coordinates",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "position",
+          "type": "Coordinates",
+          "default_value": null
+        },
+        {
+          "signature": "type : PointType",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "type",
+          "type": "PointType",
+          "default_value": null
+        }
+      ],
+      "methods": [
+        {
+          "signature": "+ createOrEditLocation (data : Map<String, String>)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "createOrEditLocation",
+          "parameters": [
+            {
+              "name": "data",
+              "type": "Map<String"
+            },
+            {
+              "name": null,
+              "type": "String>"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ listPoints () : List<CollectionPoint>",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "listPoints",
+          "parameters": [],
+          "return_type": "List<CollectionPoint>",
+          "suffix": null
+        },
+        {
+          "signature": "+ saveLocation ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "saveLocation",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ searchPoints (criteria : Map<String, String>) : List<CollectionPoint>",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "searchPoints",
+          "parameters": [
+            {
+              "name": "criteria",
+              "type": "Map<String"
+            },
+            {
+              "name": null,
+              "type": "String>"
+            }
+          ],
+          "return_type": "List<CollectionPoint>",
+          "suffix": null
+        },
+        {
+          "signature": "+ validateLocationDetails () : ValidationResult",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "validateLocationDetails",
+          "parameters": [],
+          "return_type": "ValidationResult",
+          "suffix": null
+        },
+        {
+          "signature": "+ viewDetails ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "viewDetails",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        }
+      ]
+    },
+    {
+      "name": "CollectionRequest",
+      "is_abstract": false,
+      "extends": "ServiceRequest",
+      "implements": [],
+      "attributes": [
+        {
+          "signature": "location : Address",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "location",
+          "type": "Address",
+          "default_value": null
+        },
+        {
+          "signature": "vehicleType : VehicleType",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "vehicleType",
+          "type": "VehicleType",
+          "default_value": null
+        }
+      ],
+      "methods": [
+        {
+          "signature": "+ updateStatus (status : RequestStatus)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "updateStatus",
+          "parameters": [
+            {
+              "name": "status",
+              "type": "RequestStatus"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ viewDetails ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "viewDetails",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        }
+      ]
+    },
+    {
+      "name": "Coordinates",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "name": "NotificationService",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [],
+      "methods": [
+        {
+          "signature": "+ notifyProvider (provider : ServiceProvider, message : String)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "notifyProvider",
+          "parameters": [
+            {
+              "name": "provider",
+              "type": "ServiceProvider"
+            },
+            {
+              "name": "message",
+              "type": "String"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ notifyUser (request : ServiceRequest, message : String)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "notifyUser",
+          "parameters": [
+            {
+              "name": "request",
+              "type": "ServiceRequest"
+            },
+            {
+              "name": "message",
+              "type": "String"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ sendDeactivationConfirmation (email : String)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "sendDeactivationConfirmation",
+          "parameters": [
+            {
+              "name": "email",
+              "type": "String"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ sendPasswordResetConfirmation (email : String)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "sendPasswordResetConfirmation",
+          "parameters": [
+            {
+              "name": "email",
+              "type": "String"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ sendRegistrationConfirmation (email : String)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "sendRegistrationConfirmation",
+          "parameters": [
+            {
+              "name": "email",
+              "type": "String"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ sendVerificationEmail (email : String, verificationLink : String)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "sendVerificationEmail",
+          "parameters": [
+            {
+              "name": "email",
+              "type": "String"
+            },
+            {
+              "name": "verificationLink",
+              "type": "String"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        }
+      ]
+    },
+    {
+      "name": "OpeningHours",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "name": "Product",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [
+        {
+          "signature": "category : ProductCategory",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "category",
+          "type": "ProductCategory",
+          "default_value": null
+        },
+        {
+          "signature": "listingStatus : ListingStatus",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "listingStatus",
+          "type": "ListingStatus",
+          "default_value": null
+        },
+        {
+          "signature": "name : String",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "name",
+          "type": "String",
+          "default_value": null
+        },
+        {
+          "signature": "productId : UUID",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "productId",
+          "type": "UUID",
+          "default_value": null
+        }
+      ],
+      "methods": [
+        {
+          "signature": "+ displayDetails ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "displayDetails",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ listListings (user : UserProfile) : List<Product>",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "listListings",
+          "parameters": [
+            {
+              "name": "user",
+              "type": "UserProfile"
+            }
+          ],
+          "return_type": "List<Product>",
+          "suffix": null
+        },
+        {
+          "signature": "+ publishListing ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "publishListing",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ searchProducts (filter : SearchFilter) : List<Product>",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "searchProducts",
+          "parameters": [
+            {
+              "name": "filter",
+              "type": "SearchFilter"
+            }
+          ],
+          "return_type": "List<Product>",
+          "suffix": null
+        },
+        {
+          "signature": "+ updateDetails (details : Map<String, String>)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "updateDetails",
+          "parameters": [
+            {
+              "name": "details",
+              "type": "Map<String"
+            },
+            {
+              "name": null,
+              "type": "String>"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ validateAndUpdate ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "validateAndUpdate",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ validateProductDetails (details : Map<String, String>) : ValidationResult",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "validateProductDetails",
+          "parameters": [
+            {
+              "name": "details",
+              "type": "Map<String"
+            },
+            {
+              "name": null,
+              "type": "String>"
+            }
+          ],
+          "return_type": "ValidationResult",
+          "suffix": null
+        }
+      ]
+    },
+    {
+      "name": "RoleManager",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [],
+      "methods": [
+        {
+          "signature": "+ grantAccess (role : UserRole)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "grantAccess",
+          "parameters": [
+            {
+              "name": "role",
+              "type": "UserRole"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ selectNewRole (role : UserRole)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "selectNewRole",
+          "parameters": [
+            {
+              "name": "role",
+              "type": "UserRole"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ validateRoleTransition (currentRole : UserRole, newRole : UserRole) : ValidationResult",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "validateRoleTransition",
+          "parameters": [
+            {
+              "name": "currentRole",
+              "type": "UserRole"
+            },
+            {
+              "name": "newRole",
+              "type": "UserRole"
+            }
+          ],
+          "return_type": "ValidationResult",
+          "suffix": null
+        }
+      ]
+    },
+    {
+      "name": "RoutePlan",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [
+        {
+          "signature": "waypoints : Coordinates[]",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "waypoints",
+          "type": "Coordinates[]",
+          "default_value": null
+        }
+      ],
+      "methods": []
+    },
+    {
+      "name": "SearchFilter",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [
+        {
+          "signature": "categories : ProductCategory[]",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "categories",
+          "type": "ProductCategory[]",
+          "default_value": null
+        },
+        {
+          "signature": "keywords : String",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "keywords",
+          "type": "String",
+          "default_value": null
+        }
+      ],
+      "methods": [
+        {
+          "signature": "+ setCriteria (criteria : Map<String, String>)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "setCriteria",
+          "parameters": [
+            {
+              "name": "criteria",
+              "type": "Map<String"
+            },
+            {
+              "name": null,
+              "type": "String>"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        }
+      ]
+    },
+    {
+      "name": "ServiceProvider",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [
+        {
+          "signature": "companyName : String",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "companyName",
+          "type": "String",
+          "default_value": null
+        },
+        {
+          "signature": "profile : UserProfile",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "profile",
+          "type": "UserProfile",
+          "default_value": null
+        },
+        {
+          "signature": "providerId : UUID",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "providerId",
+          "type": "UUID",
+          "default_value": null
+        }
+      ],
+      "methods": [
+        {
+          "signature": "+ acceptRequest (request : CollectionRequest)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "acceptRequest",
+          "parameters": [
+            {
+              "name": "request",
+              "type": "CollectionRequest"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ acceptTransportRequest (request : TransportRequest)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "acceptTransportRequest",
+          "parameters": [
+            {
+              "name": "request",
+              "type": "TransportRequest"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ addressIssues (issues : List<String>)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "addressIssues",
+          "parameters": [
+            {
+              "name": "issues",
+              "type": "List<String>"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ approveProvider (provider : ServiceProvider)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "approveProvider",
+          "parameters": [
+            {
+              "name": "provider",
+              "type": "ServiceProvider"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ checkAvailability (date : Date, time : TimeRange) : Boolean",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "checkAvailability",
+          "parameters": [
+            {
+              "name": "date",
+              "type": "Date"
+            },
+            {
+              "name": "time",
+              "type": "TimeRange"
+            }
+          ],
+          "return_type": "Boolean",
+          "suffix": null
+        },
+        {
+          "signature": "+ checkVehicleAvailability (request : TransportRequest) : Boolean",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "checkVehicleAvailability",
+          "parameters": [
+            {
+              "name": "request",
+              "type": "TransportRequest"
+            }
+          ],
+          "return_type": "Boolean",
+          "suffix": null
+        },
+        {
+          "signature": "+ deactivateProvider (provider : ServiceProvider)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "deactivateProvider",
+          "parameters": [
+            {
+              "name": "provider",
+              "type": "ServiceProvider"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ dispatchTeam (request : CollectionRequest)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "dispatchTeam",
+          "parameters": [
+            {
+              "name": "request",
+              "type": "CollectionRequest"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ listCompanies () : List<ServiceProvider>",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "listCompanies",
+          "parameters": [],
+          "return_type": "List<ServiceProvider>",
+          "suffix": null
+        },
+        {
+          "signature": "+ listPendingRequests () : List<CollectionRequest>",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "listPendingRequests",
+          "parameters": [],
+          "return_type": "List<CollectionRequest>",
+          "suffix": null
+        },
+        {
+          "signature": "+ listPendingTransportRequests () : List<TransportRequest>",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "listPendingTransportRequests",
+          "parameters": [],
+          "return_type": "List<TransportRequest>",
+          "suffix": null
+        },
+        {
+          "signature": "+ performTransport (request : TransportRequest)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "performTransport",
+          "parameters": [
+            {
+              "name": "request",
+              "type": "TransportRequest"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ reviewProfiles () : List<ServiceProvider>",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "reviewProfiles",
+          "parameters": [],
+          "return_type": "List<ServiceProvider>",
+          "suffix": null
+        },
+        {
+          "signature": "+ saveUpdates ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "saveUpdates",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ scheduleRequest (request : ServiceRequest)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "scheduleRequest",
+          "parameters": [
+            {
+              "name": "request",
+              "type": "ServiceRequest"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ scheduleTransport (request : TransportRequest, date : Date, time : TimeRange)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "scheduleTransport",
+          "parameters": [
+            {
+              "name": "request",
+              "type": "TransportRequest"
+            },
+            {
+              "name": "date",
+              "type": "Date"
+            },
+            {
+              "name": "time",
+              "type": "TimeRange"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ updateFields (data : Map<String, String>)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "updateFields",
+          "parameters": [
+            {
+              "name": "data",
+              "type": "Map<String"
+            },
+            {
+              "name": null,
+              "type": "String>"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ updateProfile (provider : ServiceProvider, data : Map<String, String>)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "updateProfile",
+          "parameters": [
+            {
+              "name": "provider",
+              "type": "ServiceProvider"
+            },
+            {
+              "name": "data",
+              "type": "Map<String"
+            },
+            {
+              "name": null,
+              "type": "String>"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ validateUpdates () : ValidationResult",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "validateUpdates",
+          "parameters": [],
+          "return_type": "ValidationResult",
+          "suffix": null
+        }
+      ]
+    },
+    {
+      "name": "ServiceRequest",
+      "is_abstract": true,
+      "extends": null,
+      "implements": [],
+      "attributes": [
+        {
+          "signature": "createdDate : Date",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "createdDate",
+          "type": "Date",
+          "default_value": null
+        },
+        {
+          "signature": "id : UUID",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "id",
+          "type": "UUID",
+          "default_value": null
+        },
+        {
+          "signature": "requestType : RequestType",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "requestType",
+          "type": "RequestType",
+          "default_value": null
+        },
+        {
+          "signature": "status : RequestStatus",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "status",
+          "type": "RequestStatus",
+          "default_value": null
+        }
+      ],
+      "methods": [
+        {
+          "signature": "+ bookService (provider : ServiceProvider)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "bookService",
+          "parameters": [
+            {
+              "name": "provider",
+              "type": "ServiceProvider"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ cancelRequest ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "cancelRequest",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ createRequest (requestType : RequestType, details : Map<String, String>)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "createRequest",
+          "parameters": [
+            {
+              "name": "requestType",
+              "type": "RequestType"
+            },
+            {
+              "name": "details",
+              "type": "Map<String"
+            },
+            {
+              "name": null,
+              "type": "String>"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ listRequests (user : UserProfile) : List<ServiceRequest>",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "listRequests",
+          "parameters": [
+            {
+              "name": "user",
+              "type": "UserProfile"
+            }
+          ],
+          "return_type": "List<ServiceRequest>",
+          "suffix": null
+        },
+        {
+          "signature": "+ reviewListings () : List<ServiceRequest>",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "reviewListings",
+          "parameters": [],
+          "return_type": "List<ServiceRequest>",
+          "suffix": null
+        },
+        {
+          "signature": "+ updateListings (listings : List<ServiceRequest>)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "updateListings",
+          "parameters": [
+            {
+              "name": "listings",
+              "type": "List<ServiceRequest>"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ viewDetails ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "viewDetails",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        }
+      ]
+    },
+    {
+      "name": "TimeRange",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "name": "TransportRequest",
+      "is_abstract": false,
+      "extends": "ServiceRequest",
+      "implements": [],
+      "attributes": [
+        {
+          "signature": "routePlan : RoutePlan",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "routePlan",
+          "type": "RoutePlan",
+          "default_value": null
+        }
+      ],
+      "methods": [
+        {
+          "signature": "+ updateStatus (status : RequestStatus)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "updateStatus",
+          "parameters": [
+            {
+              "name": "status",
+              "type": "RequestStatus"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ viewDetails ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "viewDetails",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        }
+      ]
+    },
+    {
+      "name": "UserAccount",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [
+        {
+          "signature": "accountStatus : AccountStatus",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "accountStatus",
+          "type": "AccountStatus",
+          "default_value": null
+        },
+        {
+          "signature": "id : UUID",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "id",
+          "type": "UUID",
+          "default_value": null
+        },
+        {
+          "signature": "registrationDate : Date",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "registrationDate",
+          "type": "Date",
+          "default_value": null
+        }
+      ],
+      "methods": [
+        {
+          "signature": "+ activateAccount ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "activateAccount",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ createAccount (profile : UserProfile, credentials : UserCredentials) : UserAccount",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "createAccount",
+          "parameters": [
+            {
+              "name": "profile",
+              "type": "UserProfile"
+            },
+            {
+              "name": "credentials",
+              "type": "UserCredentials"
+            }
+          ],
+          "return_type": "UserAccount",
+          "suffix": null
+        },
+        {
+          "signature": "+ deactivateAccount ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "deactivateAccount",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ logout ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "logout",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ recordLoginTimestamp ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "recordLoginTimestamp",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ verifyEmail (token : String) : ValidationResult",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "verifyEmail",
+          "parameters": [
+            {
+              "name": "token",
+              "type": "String"
+            }
+          ],
+          "return_type": "ValidationResult",
+          "suffix": null
+        }
+      ]
+    },
+    {
+      "name": "UserCredentials",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [
+        {
+          "signature": "encryptedPassword : String",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "encryptedPassword",
+          "type": "String",
+          "default_value": null
+        },
+        {
+          "signature": "lastLoginDate : Date",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "lastLoginDate",
+          "type": "Date",
+          "default_value": null
+        }
+      ],
+      "methods": [
+        {
+          "signature": "+ sendPasswordResetLink (email : String)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "sendPasswordResetLink",
+          "parameters": [
+            {
+              "name": "email",
+              "type": "String"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ updatePassword (newPassword : String) : ValidationResult",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "updatePassword",
+          "parameters": [
+            {
+              "name": "newPassword",
+              "type": "String"
+            }
+          ],
+          "return_type": "ValidationResult",
+          "suffix": null
+        },
+        {
+          "signature": "+ validateCredentials (email : String, password : String) : ValidationResult",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "validateCredentials",
+          "parameters": [
+            {
+              "name": "email",
+              "type": "String"
+            },
+            {
+              "name": "password",
+              "type": "String"
+            }
+          ],
+          "return_type": "ValidationResult",
+          "suffix": null
+        },
+        {
+          "signature": "+ validateEmailFormat (email : String) : ValidationResult",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "validateEmailFormat",
+          "parameters": [
+            {
+              "name": "email",
+              "type": "String"
+            }
+          ],
+          "return_type": "ValidationResult",
+          "suffix": null
+        },
+        {
+          "signature": "+ validatePasswordStrength (password : String) : ValidationResult",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "validatePasswordStrength",
+          "parameters": [
+            {
+              "name": "password",
+              "type": "String"
+            }
+          ],
+          "return_type": "ValidationResult",
+          "suffix": null
+        },
+        {
+          "signature": "+ validateResetLink (token : String) : ValidationResult",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "validateResetLink",
+          "parameters": [
+            {
+              "name": "token",
+              "type": "String"
+            }
+          ],
+          "return_type": "ValidationResult",
+          "suffix": null
+        }
+      ]
+    },
+    {
+      "name": "UserProfile",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [
+        {
+          "signature": "address : Address",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "address",
+          "type": "Address",
+          "default_value": null
+        },
+        {
+          "signature": "email : String",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "email",
+          "type": "String",
+          "default_value": null
+        },
+        {
+          "signature": "lastUpdatedDate : Date",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "lastUpdatedDate",
+          "type": "Date",
+          "default_value": null
+        },
+        {
+          "signature": "name : String",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "name",
+          "type": "String",
+          "default_value": null
+        },
+        {
+          "signature": "phoneNumber : String",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "phoneNumber",
+          "type": "String",
+          "default_value": null
+        },
+        {
+          "signature": "role : UserRole",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "role",
+          "type": "UserRole",
+          "default_value": null
+        }
+      ],
+      "methods": [
+        {
+          "signature": "+ recordModificationTimestamp ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "recordModificationTimestamp",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ searchProfile (userId : UUID) : UserProfile",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "searchProfile",
+          "parameters": [
+            {
+              "name": "userId",
+              "type": "UUID"
+            }
+          ],
+          "return_type": "UserProfile",
+          "suffix": null
+        },
+        {
+          "signature": "+ updateProfile (data : Map<String, String>)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "updateProfile",
+          "parameters": [
+            {
+              "name": "data",
+              "type": "Map<String"
+            },
+            {
+              "name": null,
+              "type": "String>"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ updateRole (role : UserRole)",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "updateRole",
+          "parameters": [
+            {
+              "name": "role",
+              "type": "UserRole"
+            }
+          ],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ validateProfileData (data : Map<String, String>) : ValidationResult",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "validateProfileData",
+          "parameters": [
+            {
+              "name": "data",
+              "type": "Map<String"
+            },
+            {
+              "name": null,
+              "type": "String>"
+            }
+          ],
+          "return_type": "ValidationResult",
+          "suffix": null
+        }
+      ]
+    },
+    {
+      "name": "ValidationResult",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "name": "WasteJourney",
+      "is_abstract": false,
+      "extends": null,
+      "implements": [],
+      "attributes": [
+        {
+          "signature": "journeyId : UUID",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "journeyId",
+          "type": "UUID",
+          "default_value": null
+        },
+        {
+          "signature": "status : TrackingStatus",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "status",
+          "type": "TrackingStatus",
+          "default_value": null
+        },
+        {
+          "signature": "trackingCode : String",
+          "visibility": "~",
+          "stereotypes": null,
+          "is_static": false,
+          "modifier": null,
+          "name": "trackingCode",
+          "type": "String",
+          "default_value": null
+        }
+      ],
+      "methods": [
+        {
+          "signature": "+ displayStatus ()",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "displayStatus",
+          "parameters": [],
+          "return_type": "void",
+          "suffix": null
+        },
+        {
+          "signature": "+ getJourneyByTrackingCode (trackingCode : String) : WasteJourney",
+          "visibility": "+",
+          "stereotypes": null,
+          "is_static": false,
+          "is_abstract": false,
+          "name": "getJourneyByTrackingCode",
+          "parameters": [
+            {
+              "name": "trackingCode",
+              "type": "String"
+            }
+          ],
+          "return_type": "WasteJourney",
+          "suffix": null
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Address",
+      "source_cardinality": null,
+      "type_symbol": "*--",
+      "target_cardinality": null,
+      "target": "Coordinates",
+      "label": null
+    },
+    {
+      "source": "CollectionPoint",
+      "source_cardinality": null,
+      "type_symbol": "*--",
+      "target_cardinality": null,
+      "target": "Coordinates",
+      "label": null
+    },
+    {
+      "source": "NotificationService",
+      "source_cardinality": null,
+      "type_symbol": "-->",
+      "target_cardinality": null,
+      "target": "ServiceProvider",
+      "label": null
+    },
+    {
+      "source": "NotificationService",
+      "source_cardinality": null,
+      "type_symbol": "-->",
+      "target_cardinality": null,
+      "target": "UserProfile",
+      "label": null
+    },
+    {
+      "source": "OpeningHours",
+      "source_cardinality": null,
+      "type_symbol": "--",
+      "target_cardinality": null,
+      "target": "TimeRange",
+      "label": null
+    },
+    {
+      "source": "Product",
+      "source_cardinality": "1",
+      "type_symbol": "-->",
+      "target_cardinality": "1",
+      "target": "UserProfile",
+      "label": null
+    },
+    {
+      "source": "SearchFilter",
+      "source_cardinality": null,
+      "type_symbol": "-->",
+      "target_cardinality": "*",
+      "target": "Product",
+      "label": null
+    },
+    {
+      "source": "ServiceProvider",
+      "source_cardinality": "1",
+      "type_symbol": "-->",
+      "target_cardinality": "*",
+      "target": "ServiceRequest",
+      "label": null
+    },
+    {
+      "source": "ServiceRequest",
+      "source_cardinality": null,
+      "type_symbol": "-->",
+      "target_cardinality": null,
+      "target": "WasteJourney",
+      "label": null
+    },
+    {
+      "source": "TransportRequest",
+      "source_cardinality": null,
+      "type_symbol": "--",
+      "target_cardinality": null,
+      "target": "RoutePlan",
+      "label": null
+    },
+    {
+      "source": "UserAccount",
+      "source_cardinality": null,
+      "type_symbol": "-->",
+      "target_cardinality": null,
+      "target": "RoleManager",
+      "label": null
+    },
+    {
+      "source": "UserAccount",
+      "source_cardinality": "1",
+      "type_symbol": "--",
+      "target_cardinality": "0..1",
+      "target": "ServiceProvider",
+      "label": null
+    },
+    {
+      "source": "UserAccount",
+      "source_cardinality": "1",
+      "type_symbol": "-->",
+      "target_cardinality": "1",
+      "target": "UserCredentials",
+      "label": null
+    },
+    {
+      "source": "UserAccount",
+      "source_cardinality": "1",
+      "type_symbol": "-->",
+      "target_cardinality": "1",
+      "target": "UserProfile",
+      "label": null
+    }
+  ]
+}
